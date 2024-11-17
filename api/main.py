@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette_exporter import PrometheusMiddleware, handle_metrics
 from api.routers import auth
-from api.models.database import engine, BaseSQL
+from api.models.getdb import engine, BaseSQL
 from fastapi.responses import RedirectResponse
 
 async def lifespan(app: FastAPI):

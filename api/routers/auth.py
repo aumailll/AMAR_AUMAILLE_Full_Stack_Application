@@ -106,7 +106,7 @@ from sqlalchemy.sql import text  # Importez text
 def show_anime(db: Session = Depends(get_db)):
     animes = db.execute(text("SELECT * FROM anime")).fetchall()
 
-    custom_columns = ["Rang", "Titre", "Score", "Épisodes", "Statut", "Studio", "Producteurs", "Type", "Genres & Thèmes", "Lien"]
+    custom_columns = ["Rang", "Titre", "Score", "Episodes", "Statut", "Studio", "Producteurs", "Type", "Genres_ET_Themes", "Lien"]
     anime_list = [
         dict(zip(custom_columns, anime))
         for anime in animes

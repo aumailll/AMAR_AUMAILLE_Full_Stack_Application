@@ -61,12 +61,12 @@
                 <th>Rang</th>
                 <th>Titre</th>
                 <th>Score</th>
-                <th>Épisodes</th>
+                <th>Episodes</th>
                 <th>Statut</th>
                 <th>Studio</th>
                 <th>Producteurs</th>
                 <th>Type</th>
-                <th>Genres & Thèmes</th>
+                <th>Genres_ET_Themes</th>
                 <th>Lien</th>
             </tr>
         </thead>
@@ -75,17 +75,18 @@
             <tr>
                 <td>{{ anime["Rang"] }}</td>
                 <td>{{ anime["Titre"] }}</td>
-                <td>{{ anime["Score"] }}</td>
-                <td>{{ anime["Épisodes"] }}</td>
+                <td>{{ anime["Score"] }}</td> <!-- Corrigé ici -->
+                <td>{{ anime["Episodes"] }}</td>
                 <td>{{ anime["Statut"] }}</td>
                 <td>{{ anime["Studio"] }}</td>
                 <td>{{ anime["Producteurs"] }}</td>
                 <td>{{ anime["Type"] }}</td>
-                <td>{{ anime["Genres & Thèmes"] }}</td>
-                <td><a href="{{ anime["Lien"] }}" target="_blank">Voir</a></td>
+                <td>{{ anime["Genres_ET_Themes"] }}</td>
+                <td>{{ anime["Lien"] }}</td> <!-- Corrigé ici -->
             </tr>
             {% endfor %}
         </tbody>
+        
     </table>
     <br>
     <a href="/auth/welcome"><button>Retour à la page de bienvenue</button></a>

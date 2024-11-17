@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey
 import os
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from api.models.database import BaseSQL
+from api.models.getdb import BaseSQL
 import uuid 
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@db:5432/db_projet")
@@ -20,15 +20,15 @@ class Anime(BaseSQL):
     __tablename__ = 'anime'
     id = Column(UUID(as_uuid=True), primary_key=True, index=True)
     rank = Column(Integer)
-    titre = Column(String(255))
-    lien = Column(String(1000))
+    titre = Column(String)
     score = Column(Float)
     episodes = Column(Integer)
-    statut = Column(String(100))
-    studio = Column(String(255), nullable=True)
-    producteurs = Column(String(255), nullable=True)
-    type = Column(String(255), nullable=True)
-    genres_ET_themes = Column(String)
+    statut = Column(String)
+    studio = Column(String, nullable=True)
+    producteurs = Column(String, nullable=True)
+    type = Column(String, nullable=True)
+    genres_et_themes = Column(String)
+    lien = Column(String)
 
     # Relationship: anime peut avoir plusieurs préférences associées
     #preferences = relationship("UserAnimePreferences", back_populates="anime")

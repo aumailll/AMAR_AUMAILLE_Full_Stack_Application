@@ -1,39 +1,44 @@
 import pandas as pd
+import uuid
 from api.models import create_db
-from api.models.database import SessionLocal, engine, BaseSQL
+from sqlalchemy.orm import Session
+from api.models.getdb import SessionLocal  # Assurez-vous que SessionLocal est importé depuis le bon fichier
 
-session = SessionLocal()
+# Chargement du fichier CSV avec un encodage explicite
+anime_df = pd.read_csv('v7/Data/anime.csv', encoding='utf-8', quotechar='"')
 
-anime_df = pd.read_csv('D:\E5\Full_stack\anime_fullStack\Data\anime.csv')
 
+# Fonction d'insertion des données dans la base
+def insert_anime(session: Session, anime_df: pd.DataFrame):
+    try:
+        for _, row in anime_df.iterrows():
+            anime = create_db.Anime(
+                id=uuid.uuid4(),
+                rank=row['Rank'],
+                titre=row['Title'],
+                score=row.get('Score', None),
+                episodes=row.get('Episodes', None),
+                statut=row.get('Status', None),
+                studio=row.get('Studio', None),
+                producteurs=row.get('Producers', None),
+                type=row.get('Type', None),
+                genres_et_themes=row.get('Genres & Themes', None),
+                lien=row['Link']
+            )
+            session.add(anime)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        print(f"Erreur d'insertion : {e}")
 
-def insert_anime(session, anime_df):
-    for _, row in anime_df.iterrows():
-        anime = create_db.Anime(
-            # Adjust column names if necessary to match model
-            rank=row['rank'],
-            titre=row['titre'],
-            lien=row['lien'],
-            score=row['score'],  # Ensure this matches your model's field name
-            episodes=row['episodes'],
-            statut=row['statut'],
-            studio=row.get('studio', None),
-            producteurs=row.get('producteurs', None),
-            type=row.get('type', None),
-            genres_ET_themes=row['genres_ET_themes']
-        )
-        session.add(anime)
+    
     session.commit()
 
-try:
-    # Create tables if they don’t exist
-    BaseSQL.metadata.create_all(bind=engine)
-    # Insert data
-    insert_anime(session, anime_df)
-except Exception as e:
-    print("Il y a eu une erreur:", e)
-finally:
-    # Close the session to release database resources
-    session.close()
+# Définition de la session
+session = SessionLocal()
 
-print("Les données ont été ajoutées à la base de données avec succès.")
+# Appel de la fonction d'insertion
+insert_anime(session, anime_df)
+
+# Fermeture de la session
+session.close()
