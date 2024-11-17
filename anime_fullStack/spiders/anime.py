@@ -29,7 +29,7 @@ class MyAnimeListSpider(scrapy.Spider):
          self.file = open(csv_file_path, 'w', newline='', encoding='utf-8')
          self.writer = csv.writer(self.file, quoting=csv.QUOTE_ALL)  # Encapsuler tous les champs entre guillemets
          # Écrire l'en-tête du CSV
-         self.writer.writerow(['Rank', 'Title', 'Link', 'Score', 'Episodes', 'Status', 'Studio', 'Producers', 'Type', 'Genres & Themes'])
+         self.writer.writerow(['rank', 'titre', 'lien', 'score', 'episodes', 'statut', 'studio', 'producteurs', 'type', 'genres_themes'])
 
      def parse(self, response):
          animes = response.css('.ranking-list')

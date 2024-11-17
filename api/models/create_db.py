@@ -18,8 +18,8 @@ class User(BaseSQL):
 
 class Anime(BaseSQL):
     __tablename__ = 'anime'
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True)
-    rank = Column(Integer)
+    #id = Column(UUID(as_uuid=True), primary_key=True, index=True)
+    rank = Column(Integer, primary_key=True)
     titre = Column(String)
     score = Column(Float)
     episodes = Column(Integer)
@@ -27,7 +27,7 @@ class Anime(BaseSQL):
     studio = Column(String, nullable=True)
     producteurs = Column(String, nullable=True)
     type = Column(String, nullable=True)
-    genres_et_themes = Column(String)
+    genres_themes = Column(String)
     lien = Column(String)
 
     # Relationship: anime peut avoir plusieurs préférences associées

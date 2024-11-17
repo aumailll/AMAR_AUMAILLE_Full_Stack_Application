@@ -1,44 +1,49 @@
-import pandas as pd
-import uuid
-from api.models import create_db
-from sqlalchemy.orm import Session
-from api.models.getdb import SessionLocal  # Assurez-vous que SessionLocal est importé depuis le bon fichier
+import csv
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from api.models.create_db import Anime # Assure-toi d'importer ton modèle Anime
+from api.models.getdb import DATABASE_URL  # Importation de l'URL de connexion
 
-# Chargement du fichier CSV avec un encodage explicite
-anime_df = pd.read_csv('v7/Data/anime.csv', encoding='utf-8', quotechar='"')
+# Créer l'engine de connexion à la base de données
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=True, bind=engine)
 
-
-# Fonction d'insertion des données dans la base
-def insert_anime(session: Session, anime_df: pd.DataFrame):
+# Fonction d'insertion des données depuis le CSV
+def insert_data_from_csv(csv_file_path):
+    session = SessionLocal()
     try:
-        for _, row in anime_df.iterrows():
-            anime = create_db.Anime(
-                id=uuid.uuid4(),
-                rank=row['Rank'],
-                titre=row['Title'],
-                score=row.get('Score', None),
-                episodes=row.get('Episodes', None),
-                statut=row.get('Status', None),
-                studio=row.get('Studio', None),
-                producteurs=row.get('Producers', None),
-                type=row.get('Type', None),
-                genres_et_themes=row.get('Genres & Themes', None),
-                lien=row['Link']
-            )
-            session.add(anime)
-        session.commit()
+        # Ouvrir et lire le fichier CSV
+        with open(csv_file_path, mode='r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            
+            for row in reader:
+                # Créer une instance de l'objet Anime avec les données du CSV
+                anime = Anime(
+                    rank=row['rank'],
+                    titre=row['titre'],
+                    score=row['score'],
+                    episodes=row['episodes'],
+                    statut=row['statut'],
+                    studio=row['studio'],
+                    producteurs=row['producteurs'],
+                    type=row['type'],
+                    genres_themes=row['genres_themes'],
+                    lien=row['lien']
+                )
+                session.add(anime)
+
+            # Commit les changements dans la base de données
+            session.commit()
+        print("Données insérées avec succès dans la table Anime.")
+
     except Exception as e:
-        session.rollback()
-        print(f"Erreur d'insertion : {e}")
+        session.rollback()  # En cas d'erreur, annuler la transaction
+        print(f"Erreur lors de l'insertion des données : {e}")
 
-    
-    session.commit()
+    finally:
+        session.close()
 
-# Définition de la session
-session = SessionLocal()
-
-# Appel de la fonction d'insertion
-insert_anime(session, anime_df)
-
-# Fermeture de la session
-session.close()
+# Appel de la fonction pour insérer les données
+csv_file_path = r'Data/anime.csv'  # Modifie le chemin selon où ton fichier CSV est stocké
+insert_data_from_csv(csv_file_path)
