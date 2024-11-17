@@ -36,7 +36,7 @@ def signup(
     )
     db.add(new_user)
     db.commit()
-    return RedirectResponse("/auth/", status_code=303)
+    return RedirectResponse("/auth/welcome?email={email}", status_code=303)
 
 @router.post("/login")
 def login(
@@ -94,25 +94,41 @@ def database_page(request: Request, db: Session = Depends(get_db)):
 
 from sqlalchemy.sql import text  # Importez text pour exécuter des requêtes brutes
 
-# @router.get("/anime")
-# def show_anime(request: Request, db: Session = Depends(get_db)):
-#     """Affiche les données des animes depuis la base de données."""
-#     query = text("SELECT * FROM anime")  # Utilisation explicite de text()
-#     animes = db.execute(query).fetchall()
-#     return templates.TemplateResponse("anime.html", {"request": request, "animes": animes})
+
 from sqlalchemy.sql import text  # Importez text
 
+# @router.get("/anime")
+# def show_anime(db: Session = Depends(get_db)):
+#     animes = db.execute(text("SELECT * FROM anime")).fetchall()
+
+#     custom_columns = ["Rang", "Titre", "Score", "Episodes", "Statut", "Studio", "Producteurs", "Type", "Genres_ET_Themes", "Lien"]
+#     anime_list = [
+#         dict(zip(custom_columns, anime))
+#         for anime in animes
+#     ]
+
+#     return templates.TemplateResponse(
+#         "anime.html",
+#         {"request": {}, "animes": anime_list}
+#     )
 @router.get("/anime")
-def show_anime(db: Session = Depends(get_db)):
+def show_anime(request: Request, db: Session = Depends(get_db), format: str = "html"):
+    # Récupérer les données depuis la base de données
     animes = db.execute(text("SELECT * FROM anime")).fetchall()
 
+    # Définir les colonnes correspondant à la table
     custom_columns = ["Rang", "Titre", "Score", "Episodes", "Statut", "Studio", "Producteurs", "Type", "Genres_ET_Themes", "Lien"]
     anime_list = [
         dict(zip(custom_columns, anime))
         for anime in animes
     ]
 
+    # Si format est JSON, renvoyer les données directement
+    if format == "json":
+        return JSONResponse(content=anime_list)
+
+    # Sinon, rendre le template HTML
     return templates.TemplateResponse(
         "anime.html",
-        {"request": {}, "animes": anime_list}
+        {"request": request, "animes": anime_list}
     )
