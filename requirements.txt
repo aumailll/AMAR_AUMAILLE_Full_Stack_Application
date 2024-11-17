@@ -1,0 +1,21 @@
+fastapi
+uvicorn
+pydantic
+typing
+python-multipart
+tortoise-orm
+asyncpg
+psycopg2
+jinja2
+databases
+sqlalchemy
+requests
+pytest
+starlette_exporter
+passlib[bcrypt]
+PyJWT 
+python-jose[cryptography]
+pydantic[email]
+# bcrypt
+bcrypt==4.0.1
+passlib==1.7.4

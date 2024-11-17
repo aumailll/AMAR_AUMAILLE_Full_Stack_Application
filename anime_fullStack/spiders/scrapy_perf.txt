@@ -1,0 +1,90 @@
+import scrapy
+import psycopg2
+import os
+import html
+# adapter ce code si on veut directement passer de scraping à postgres sans csv
+def clean_text(text):
+    if text:
+        return ' '.join(text.split()).strip(' \n')
+    return ''
+
+class MyAnimeListSpider(scrapy.Spider):
+    name = 'anime'
+    allowed_domains = ['myanimelist.net']
+    start_urls = [
+        'https://myanimelist.net/topanime.php',
+        'https://myanimelist.net/topanime.php?limit=50',
+        'https://myanimelist.net/topanime.php?limit=100',
+        # ...
+    ]
+
+    def __init__(self, *args, **kwargs):
+        super(MyAnimeListSpider, self).__init__(*args, **kwargs)
+        
+        # Connexion à PostgreSQL
+        self.connection = psycopg2.connect(
+            host=os.getenv('POSTGRES_HOST', 'localhost'),
+            database=os.getenv('POSTGRES_DB', 'db_anime'),
+            user=os.getenv('POSTGRES_USER', 'user'),
+            password=os.getenv('POSTGRES_PASSWORD', 'password')
+        )
+        self.cursor = self.connection.cursor()
+
+    def parse(self, response):
+        animes = response.css('.ranking-list')
+
+        for anime in animes:
+            item = {}
+            item['rank'] = anime.css('.rank span::text').get().strip()
+
+            title_element = anime.css('td.title a')
+            item['titre'] = html.unescape(title_element.css('img::attr(alt)').get()).replace('Anime: ', '')
+            item['lien'] = title_element.css('::attr(href)').get()
+            item['score'] = anime.css('.score-label::text').get()
+
+            yield scrapy.Request(url=item['lien'], callback=self.parse_anime_page, meta={'item': item})
+
+    def parse_anime_page(self, response):
+        item = response.meta['item']
+        item['episodes'] = clean_text(response.xpath('//span[text()="Episodes:"]/following-sibling::text()').get())
+        item['statut'] = clean_text(response.xpath('//span[text()="Status:"]/following-sibling::text()').get())
+        item['studio'] = ', '.join(response.css('span:contains("Studios:") + a::text').getall())
+        item['producteurs'] = ', '.join(response.css('span:contains("Producers:") + a::text').getall())
+        
+        genres = response.css('span:contains("Genres:") + span[itemprop="genre"]::text , span[itemprop="genre"]::text').getall()
+        item['type'] = response.css('div.spaceit_pad span.dark_text:contains("Demographic:") + span[itemprop="genre"] + a::text').get()
+        item['genres_ET_themes'] = ', '.join(genres)
+
+        # Sauvegarder l'item dans la base de données
+        self.save_to_db(item)
+
+    def save_to_db(self, item):
+        # Requête d'insertion SQL pour PostgreSQL
+        query = """
+            INSERT INTO anime (rank, titre, lien, score, episodes, statut, studio, producteurs, type, genres_ET_themes)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        data = (
+            int(item['rank']),
+            item['titre'],
+            item['lien'],
+            float(item['score']) if item['score'] else None,
+            int(item['episodes']) if item['episodes'] else None,
+            item['statut'],
+            item['studio'],
+            item['producteurs'],
+            item['type'],
+            item['genres_ET_themes']
+        )
+        
+        try:
+            self.cursor.execute(query, data)
+            self.connection.commit()
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'insertion dans la base de données : {e}")
+            self.connection.rollback()
+
+    def closed(self, reason):
+        # Fermer la connexion à la base de données lors de la fermeture du spider
+        self.cursor.close()
+        self.connection.close()

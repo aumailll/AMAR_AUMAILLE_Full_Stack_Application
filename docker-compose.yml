@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: anime_postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_projet
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: .  # Le répertoire contenant le Dockerfile
+    container_name: api_container
+    depends_on:
+      - postgres  # PostgreSQL doit démarrer avant l'API
+    environment:
+      DATABASE_URL: "postgresql://user:password@postgres:5432/db_projet"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app 
+
+volumes:
+  postgres_data:
+
+

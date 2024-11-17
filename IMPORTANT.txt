@@ -1,0 +1,3 @@
+Nettoyer la bdd s'il y a des petits soucis par exemple "unknown" a nombre d'épsiodes en inventer un 
+
+Réadapter les noms des colonnes si nécessaire
