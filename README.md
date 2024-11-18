@@ -1,23 +1,26 @@
 # Les 300 meilleurs animes du moment 
 
 ## Table des matières 
-1. [Description générale](#description-générale)
-2. [Critères d'évaluation](#critères-dévaluation)
-3. [Description du sujet choisi](#déscription-du-sujet-choisi)
-4. [User Guide](#user-guide)
-   - [Déploiement](#déploiement)
-   - [Inscription et Connexion](#Inscription-et-Connexion)
-   - [Utilisation de l'application](#utilisation-de-lapplication)
-      - [1. ](#)
-      - [2.](#)
-      - [3.](#)
-      - [4. ](#)
-5. [Developper Guide](#developper-guide)
-   - [Vue d'ensemble](#vue-densemble)
-   - [Architecture du Code](#architecture-du-code)
-   - [La base de données](#la-base-de-données)
-6. [Difficultées rencontrées](#difficultées-rencontrées)
-7. [Conclusion](#-conclusion)
+- [Les 300 meilleurs animes du moment](#les-300-meilleurs-animes-du-moment)
+  - [Table des matières](#table-des-matières)
+  - [Description générale](#description-générale)
+  - [Critères d'évaluation](#critères-dévaluation)
+  - [Description du sujet choisi](#description-du-sujet-choisi)
+  - [User guide](#user-guide)
+    - [Déploiement](#déploiement)
+    - [Inscription et connexion](#inscription-et-connexion)
+    - [Utilisation de l'application](#utilisation-de-lapplication)
+      - [Dashboard Streamlit autour de l'analyse des données](#dashboard-streamlit-autour-de-lanalyse-des-données)
+  - [Developer guide](#developer-guide)
+    - [Vue d'ensemble](#vue-densemble)
+    - [Architecture du code](#architecture-du-code)
+      - [Modèles](#modèles)
+      - [Schémas](#schémas)
+      - [Routes](#routes)
+      - [Services](#services)
+      - [Templates](#templates)
+    - [La base de données](#la-base-de-données)
+  - [Les difficultées rencontrées](#les-difficultées-rencontrées)
 
 
 
@@ -92,6 +95,9 @@ Pour accéder au reste de l'application et plus particulièrement pour découvri
 
 
 ### Utilisation de l'application
+
+#### Dashboard Streamlit autour de l'analyse des données
+
 
 
 ## Developer guide

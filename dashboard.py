@@ -57,13 +57,13 @@ if not data.empty:
             else:
                 st.error("Aucun anime trouvé.")
 
-    # Afficher les liens vers les animes les mieux notés
-    st.subheader("Liens vers les Animes les mieux notés")
-    top_animes_links = [
-        f"{i+1}. [{row['titre']}]({row['lien']}) - Score: {row['score']}"
-        for i, row in data.head(10).iterrows()
-    ]
-    st.markdown("\n".join(top_animes_links))
+    # # Afficher les liens vers les animes les mieux notés
+    # st.subheader("Liens vers les Animes les mieux notés")
+    # top_animes_links = [
+    #     f"{i+1}. [{row['titre']}]({row['lien']}) - Score: {row['score']}"
+    #     for i, row in data.head(10).iterrows()
+    # ]
+    # st.markdown("\n".join(top_animes_links))
 
     # Filtrer les données en fonction du rang sélectionné
     st.header("Sélectionnez une tranche d'animes")
@@ -75,6 +75,55 @@ if not data.empty:
     )
     filtered_data = data[(data['rank'] >= selected_range[0]) & (data['rank'] <= selected_range[1])]
 
+    # Afficher les liens vers les animes les mieux notés
+    ITEMS_PER_VIEW = 10
+
+    if 'current_page' not in st.session_state:
+        st.session_state.current_page = 1
+
+    total_items = len(filtered_data)
+    total_pages = (total_items // ITEMS_PER_VIEW) + (1 if total_items % ITEMS_PER_VIEW != 0 else 0)
+    start_idx = (st.session_state.current_page - 1) * ITEMS_PER_VIEW
+    end_idx = min(start_idx + ITEMS_PER_VIEW, total_items)
+
+    paged_data = filtered_data.iloc[start_idx:end_idx]
+
+    st.subheader(f"Classement des Animes ({start_idx+1} à {end_idx}/{total_items})")
+    if not paged_data.empty:
+        for i, row in enumerate(paged_data.iterrows(), start=start_idx + 1):
+            idx, row_data = row
+            st.markdown(f"**{i}. [{row_data['titre']}]({row_data['lien']})** - Score: {row_data['score']}")
+    else:
+        st.warning("Aucun anime à afficher dans cette plage.")
+
+    col1, col2, col3 = st.columns([2, 6, 2])
+
+    with col1:
+        if st.button("⬅️", key="prev") and st.session_state.current_page > 1:
+            st.session_state.current_page -= 1
+
+    with col2:
+        page_circles = []
+        for page in range(1, total_pages + 1):
+            if page == st.session_state.current_page:
+                page_circles.append(
+                    f"<span style='color: #007BFF; font-size: 20px;'>●</span>"
+                )
+            else:
+                page_circles.append(
+                    f"<span style='color: lightgray; font-size: 20px;'>○</span>"
+                )
+        st.markdown(
+            f"<div style='text-align: center;'>{' '.join(page_circles)}</div>",
+            unsafe_allow_html=True,
+        )
+
+    with col3:
+        if st.button("➡️", key="next") and st.session_state.current_page < total_pages:
+            st.session_state.current_page += 1
+
+    st.markdown("---")
+
     # Histogramme des studios les plus productifs
     st.subheader("Studios les plus productifs")
     if 'studio' in filtered_data.columns:
@@ -84,7 +133,7 @@ if not data.empty:
             x=studios_count.index,
             y=studios_count.values,
             labels={'x': 'Studio', 'y': "Nombre d'animes produits"},
-            title="Studios les plus productifs"
+            # title="Studios les plus productifs"
         )
         st.plotly_chart(studio_fig)
 
@@ -97,7 +146,7 @@ if not data.empty:
             x=status_count.index,
             y=status_count.values,
             labels={'x': 'Statut', 'y': "Nombre d'animes"},
-            title="Distribution des Animes en fonction du Statut"
+            # title="Distribution des Animes en fonction du statut"
         )
         st.plotly_chart(status_fig)
 
@@ -115,14 +164,45 @@ if not data.empty:
     # Histogramme du nombre d'épisodes
     st.subheader("Nombre d'épisodes")
     if 'episodes' in filtered_data.columns:
+        sorted_data = filtered_data.sort_values(by='episodes', ascending=True)
+        
         episode_fig = px.bar(
-            filtered_data,
-            x='titre',
-            y='episodes',
-            labels={'x': 'Anime', 'y': "Nombre d'épisodes"},
-            title="Histogramme du Nombre d'Épisodes"
+            sorted_data,
+            x='episodes',
+            y='titre',
+            orientation='h',  
+            labels={'x': "Nombre d'épisodes", 'y': 'Anime'},
+            title="Histogramme du nombre d'épisodes"
         )
         st.plotly_chart(episode_fig)
+
+    # Scatter plot sur les producteurs
+    st.subheader("Etude sur les producteurs")
+    data_exploded = data.assign(producteurs=data['producteurs'].str.split(',')).explode('producteurs')
+    data_exploded['producteurs'] = data_exploded['producteurs'].str.strip()
+    producteurs_count = data_exploded['producteurs'].value_counts().reset_index()
+    producteurs_count.columns = ['producteur', 'nombre_productions']
+
+    merged_data = pd.merge(
+        data_exploded,
+        producteurs_count,
+        left_on='producteurs',
+        right_on='producteur',
+        how='left'
+    )
+
+    scatter_fig = px.scatter(
+        merged_data,
+        x='rank',
+        y='nombre_productions',
+        color='producteurs',
+        size='score',
+        hover_name='titre',
+        labels={'rank': 'Rang', 'nombre_productions': 'Nombre de Productions'},
+        title="Rang des animes et producteurs les plus actifs"
+    )
+    st.plotly_chart(scatter_fig)
+
 
 else:
     st.warning("Aucune donnée disponible dans la base de données.")
