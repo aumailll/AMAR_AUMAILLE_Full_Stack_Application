@@ -114,7 +114,6 @@ Dans ce projet, nous avons développé un tableau de bord interactif basé sur u
 
 Le projet initial avait pour but d'explorer les données à l’aide de Python et d’outils analytiques standards. Nous avons étendu cette étude en ajoutant une couche de visualisation et d’interactivité via **Streamlit**, que nous avons choisi pour son esthétique, sa simplicité d’utilisation, et sa capacité à produire des graphiques et interfaces utilisateurs performantes.
 
----
 
 ### Intégration avec FastAPI et adaptation
 
@@ -141,7 +140,6 @@ Pour enrichir l’étude initiale et construire une application web robuste et m
    - **FastAPI** s’occupe de la gestion et de la sécurité des données via des routes bien définies.
    - **Streamlit** se concentre sur la présentation des données et l’interactivité, en consommant les données fournies par FastAPI.
 
----
 
 ### Adaptation des données pour Streamlit
 
@@ -164,7 +162,6 @@ L’un des défis principaux a été d’adapter les données issues de l’étu
     - Les genres et thèmes sont regroupés et affichés dans un diagramme circulaire.
     - Les studios sont triés par productivité et visualisés sous forme d’histogramme.
 
----
 
 ### Pourquoi Streamlit et FastAPI ?
 
@@ -179,13 +176,10 @@ Nous avons choisi **Streamlit** pour sa capacité à offrir une expérience util
 
 En combinant ces deux outils, nous avons transformé une étude de données statique en une application web dynamique et évolutive, accessible via [http://localhost:8501](http://localhost:8501).
 
----
-
 ### Fonctionnalités du tableau de bord
 
 Le tableau de bord interactif est conçu pour offrir une exploration intuitive et approfondie des 300 meilleurs animes. Voici une présentation des fonctionnalités principales, chacune accompagnée d'une explication détaillée et d'une capture d'écran illustrative.
 
----
 
 #### **1. Barre de recherche**
 
@@ -235,7 +229,6 @@ Les animes sont affichés sous forme de liste paginée, offrant des informations
 
 ![Capture Visualisation paginée](images/streamlit_pagination.jpg)
 
----
 
 
 ## Developer guide
