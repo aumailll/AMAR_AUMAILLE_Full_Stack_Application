@@ -57,14 +57,6 @@ if not data.empty:
             else:
                 st.error("Aucun anime trouvé.")
 
-    # # Afficher les liens vers les animes les mieux notés
-    # st.subheader("Liens vers les Animes les mieux notés")
-    # top_animes_links = [
-    #     f"{i+1}. [{row['titre']}]({row['lien']}) - Score: {row['score']}"
-    #     for i, row in data.head(10).iterrows()
-    # ]
-    # st.markdown("\n".join(top_animes_links))
-
     # Filtrer les données en fonction du rang sélectionné
     st.header("Sélectionnez une tranche d'animes")
     selected_range = st.slider(
@@ -133,7 +125,6 @@ if not data.empty:
             x=studios_count.index,
             y=studios_count.values,
             labels={'x': 'Studio', 'y': "Nombre d'animes produits"},
-            # title="Studios les plus productifs"
         )
         st.plotly_chart(studio_fig)
 
@@ -146,7 +137,6 @@ if not data.empty:
             x=status_count.index,
             y=status_count.values,
             labels={'x': 'Statut', 'y': "Nombre d'animes"},
-            # title="Distribution des Animes en fonction du statut"
         )
         st.plotly_chart(status_fig)
 

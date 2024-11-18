@@ -22,7 +22,6 @@
           - [5. Diagramme circulaire des genres les plus populaires](#5-diagramme-circulaire-des-genres-les-plus-populaires)
           - [6. Histogramme du nombre d’épisodes par anime](#6-histogramme-du-nombre-dépisodes-par-anime)
           - [7. Diagramme de dispersion pour les producteurs les plus actifs](#7-diagramme-de-dispersion-pour-les-producteurs-les-plus-actifs)
-          - [8. Visualisation paginée des animes](#8-visualisation-paginée-des-animes)
   - [Developer guide](#developer-guide)
     - [Vue d'ensemble](#vue-densemble)
     - [Architecture du code](#architecture-du-code)
@@ -222,13 +221,6 @@ Cet histogramme présente les animes triés par leur nombre d’épisodes sous f
 Ce graphique met en relation le nombre de productions d’un producteur et les scores des animes associés. Chaque point représente un producteur et ses productions, avec une taille de point proportionnelle au score des animes. Cela permet d’identifier les producteurs les plus influents et de comprendre leur rôle dans la création de contenus populaires.
 
 ![Capture Producteurs actifs](images/streamlit_producers.jpg)
-
-###### 8. Visualisation paginée des animes
-
-Les animes sont affichés sous forme de liste paginée, offrant des informations essentielles telles que le titre, le score, les studios, les genres, et le statut. Les utilisateurs peuvent naviguer facilement page par page pour explorer le classement complet, et chaque anime inclut un lien direct vers sa page dédiée.
-
-![Capture Visualisation paginée](images/streamlit_pagination.jpg)
-
 
 
 ## Developer guide
