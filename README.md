@@ -10,7 +10,19 @@
     - [Déploiement](#déploiement)
     - [Inscription et connexion](#inscription-et-connexion)
     - [Utilisation de l'application](#utilisation-de-lapplication)
-      - [Dashboard Streamlit autour de l'analyse des données](#dashboard-streamlit-autour-de-lanalyse-des-données)
+      - [Dashboard Streamlit autour de l’analyse des données](#dashboard-streamlit-autour-de-lanalyse-des-données)
+    - [Intégration avec FastAPI et adaptation](#intégration-avec-fastapi-et-adaptation)
+    - [Adaptation des données pour Streamlit](#adaptation-des-données-pour-streamlit)
+    - [Pourquoi Streamlit et FastAPI ?](#pourquoi-streamlit-et-fastapi-)
+    - [Fonctionnalités du tableau de bord](#fonctionnalités-du-tableau-de-bord)
+      - [**1. Barre de recherche**](#1-barre-de-recherche)
+      - [**2. Filtrage par tranche de rang**](#2-filtrage-par-tranche-de-rang)
+      - [**3. Histogramme des studios les plus productifs**](#3-histogramme-des-studios-les-plus-productifs)
+      - [**4. Distribution des animes selon leur statut**](#4-distribution-des-animes-selon-leur-statut)
+      - [**5. Diagramme circulaire des genres les plus populaires**](#5-diagramme-circulaire-des-genres-les-plus-populaires)
+      - [**6. Histogramme du nombre d’épisodes par anime**](#6-histogramme-du-nombre-dépisodes-par-anime)
+      - [**7. Diagramme de dispersion pour les producteurs les plus actifs**](#7-diagramme-de-dispersion-pour-les-producteurs-les-plus-actifs)
+      - [**8. Visualisation paginée des animes**](#8-visualisation-paginée-des-animes)
   - [Developer guide](#developer-guide)
     - [Vue d'ensemble](#vue-densemble)
     - [Architecture du code](#architecture-du-code)
@@ -96,8 +108,134 @@ Pour accéder au reste de l'application et plus particulièrement pour découvri
 
 ### Utilisation de l'application
 
-#### Dashboard Streamlit autour de l'analyse des données
+#### Dashboard Streamlit autour de l’analyse des données
 
+Dans ce projet, nous avons développé un tableau de bord interactif basé sur une étude existante. Cette étude initiale, réalisée et stockée sur ce [dépôt GitHub](https://github.com/aumailll/AMAR_AUMAILLE_Projet_Data_Engineering), a servi de base pour extraire, nettoyer et analyser les données des 300 meilleurs animes. 
+
+Le projet initial avait pour but d'explorer les données à l’aide de Python et d’outils analytiques standards. Nous avons étendu cette étude en ajoutant une couche de visualisation et d’interactivité via **Streamlit**, que nous avons choisi pour son esthétique, sa simplicité d’utilisation, et sa capacité à produire des graphiques et interfaces utilisateurs performantes.
+
+---
+
+### Intégration avec FastAPI et adaptation
+
+Pour enrichir l’étude initiale et construire une application web robuste et modulaire, nous avons utilisé **FastAPI** pour structurer l’API qui alimente le tableau de bord. Voici les principales étapes et choix que nous avons réalisés pour adapter le projet :
+
+1. **Création d’une base de données relationnelle (PostgreSQL)** :
+   - Les données issues du projet initial ont été nettoyées, normalisées et insérées dans une base PostgreSQL.
+   - Nous avons structuré les données autour des tables `anime` (informations sur les animes) et `user` (gestion des utilisateurs).
+
+2. **Routes et endpoints FastAPI** :
+   - Nous avons défini des endpoints spécifiques pour interagir avec les données via des appels API. Par exemple :
+     - `GET /animes` : pour récupérer les informations des animes selon des critères définis.
+     - `POST /users` : pour enregistrer les utilisateurs.
+     - `GET /genres` : pour obtenir la liste des genres disponibles.
+   - Ces routes respectent la logique **CRUD** (Create, Read, Update, Delete) et sont conçues pour répondre aux besoins des fonctionnalités du tableau de bord.
+
+3. **Services FastAPI** :
+   - La logique métier et les interactions complexes avec la base de données ont été encapsulées dans des **services**. Ces derniers permettent :
+     - La gestion des utilisateurs (authentification via JWT).
+     - La sélection et le filtrage des données selon des paramètres dynamiques.
+     - La génération de réponses adaptées au tableau de bord Streamlit.
+
+4. **Modularité et séparation des responsabilités** :
+   - **FastAPI** s’occupe de la gestion et de la sécurité des données via des routes bien définies.
+   - **Streamlit** se concentre sur la présentation des données et l’interactivité, en consommant les données fournies par FastAPI.
+
+---
+
+### Adaptation des données pour Streamlit
+
+L’un des défis principaux a été d’adapter les données issues de l’étude initiale pour qu’elles soient utilisables par le tableau de bord Streamlit. Voici comment nous avons procédé :
+
+- **Nettoyage des données** :
+  - Les données initiales contenaient des informations manquantes ou mal formatées. Par exemple :
+    - Les épisodes marqués comme "unknown" ont été remplacés par le dernier épisode connu.
+    - Les genres et producteurs, fournis sous forme de listes non uniformes, ont été normalisés.
+  - Ces données nettoyées ont été stockées dans une base PostgreSQL pour permettre des requêtes performantes.
+
+- **Connexion Streamlit ↔ PostgreSQL via FastAPI** :
+  - Streamlit consomme les données via des appels API vers FastAPI, garantissant :
+    - Une structure claire et maintenable.
+    - Une abstraction des détails de la base de données.
+    - Une sécurité accrue grâce aux mécanismes d’authentification intégrés.
+
+- **Génération dynamique de graphiques** :
+  - Les données récupérées depuis FastAPI sont transformées et visualisées dans Streamlit. Par exemple :
+    - Les genres et thèmes sont regroupés et affichés dans un diagramme circulaire.
+    - Les studios sont triés par productivité et visualisés sous forme d’histogramme.
+
+---
+
+### Pourquoi Streamlit et FastAPI ?
+
+Nous avons choisi **Streamlit** pour sa capacité à offrir une expérience utilisateur fluide et interactive, et **FastAPI** pour sa robustesse dans la gestion des données et des requêtes API. Ce duo nous permet de :
+
+- **Conserver la structure modulaire de FastAPI** :
+  - Les données sont accessibles à travers des routes bien définies.
+  - La logique métier est isolée dans des services, ce qui facilite la maintenance et l’extension.
+
+- **Offrir une visualisation intuitive via Streamlit** :
+  - Streamlit exploite les données de manière graphique, permettant à l’utilisateur final d’interagir facilement avec le contenu.
+
+En combinant ces deux outils, nous avons transformé une étude de données statique en une application web dynamique et évolutive, accessible via [http://localhost:8501](http://localhost:8501).
+
+---
+
+### Fonctionnalités du tableau de bord
+
+Le tableau de bord interactif est conçu pour offrir une exploration intuitive et approfondie des 300 meilleurs animes. Voici une présentation des fonctionnalités principales, chacune accompagnée d'une explication détaillée et d'une capture d'écran illustrative.
+
+---
+
+#### **1. Barre de recherche**
+
+La barre de recherche permet aux utilisateurs de trouver rapidement un anime en entrant tout ou partie de son titre. Une fois la recherche effectuée, les détails de l’anime correspondant sont affichés, notamment son score, le studio, le statut (en cours ou terminé), les genres associés, et le nombre d’épisodes. Cette fonctionnalité est particulièrement utile pour les utilisateurs qui souhaitent accéder directement aux informations d’un anime spécifique sans parcourir l’ensemble du classement.
+
+![Capture Barre de recherche](images/streamlit_search.jpg)
+
+#### **2. Filtrage par tranche de rang**
+
+Le tableau de bord inclut un slider interactif qui permet de filtrer les animes en fonction de leur position dans le classement. Les utilisateurs peuvent définir une plage de rangs (par exemple, les 10 premiers ou les 30 derniers) pour explorer les données correspondant à leurs centres d’intérêt. Cette fonctionnalité facilite la navigation dans des sections spécifiques du classement, en se concentrant uniquement sur les animes qui importent à l’utilisateur.
+
+![Capture Filtrage par rang](images/streamlit_filtering.jpg)
+
+#### **3. Histogramme des studios les plus productifs**
+
+Cet histogramme visualise le nombre d’animes produits par chaque studio, en mettant en avant les studios les plus prolifiques. Chaque barre représente un studio, et sa hauteur indique le volume de productions. Cela permet d’identifier rapidement les grands acteurs de l’industrie, offrant une vue d’ensemble des studios qui contribuent significativement au classement des meilleurs animes.
+
+![Capture Studios les plus productifs](images/streamlit_studios.jpg)
+
+#### **4. Distribution des animes selon leur statut**
+
+Un histogramme affiche la répartition des animes par statut (terminé, en cours, ou autres). Ce graphique donne un aperçu clair de la proportion d’animes achevés ou toujours en production parmi les meilleurs. Cela aide les utilisateurs à comprendre les tendances actuelles de l’industrie et à choisir des séries terminées pour une expérience de visionnage complète.
+
+![Capture Statut des animes](images/streamlit_status.jpg)
+
+#### **5. Diagramme circulaire des genres les plus populaires**
+
+Le diagramme circulaire montre la répartition des genres et thèmes les plus fréquents parmi les 300 meilleurs animes. Ce graphique est idéal pour visualiser les préférences générales du public et les tendances de l’industrie, en identifiant les genres dominants comme l’action, l’aventure, ou le drame. Les utilisateurs peuvent ainsi repérer facilement les genres qu’ils souhaitent explorer davantage.
+
+![Capture Genres populaires](images/streamlit_genres.jpg)
+
+#### **6. Histogramme du nombre d’épisodes par anime**
+
+Cet histogramme présente les animes triés par leur nombre d’épisodes sous forme de barres horizontales. Cela permet aux utilisateurs de voir si les animes longs (50+ épisodes) ou courts (12-24 épisodes) dominent le classement. Cette fonctionnalité est utile pour les spectateurs qui préfèrent des séries adaptées à leur disponibilité en termes de durée.
+
+![Capture Nombre d'épisodes](images/streamlit_episodes.jpg)
+
+#### **7. Diagramme de dispersion pour les producteurs les plus actifs**
+
+Ce graphique met en relation le nombre de productions d’un producteur et les scores des animes associés. Chaque point représente un producteur et ses productions, avec une taille de point proportionnelle au score des animes. Cela permet d’identifier les producteurs les plus influents et de comprendre leur rôle dans la création de contenus populaires.
+
+![Capture Producteurs actifs](images/streamlit_producers.jpg)
+
+#### **8. Visualisation paginée des animes**
+
+Les animes sont affichés sous forme de liste paginée, offrant des informations essentielles telles que le titre, le score, les studios, les genres, et le statut. Les utilisateurs peuvent naviguer facilement page par page pour explorer le classement complet, et chaque anime inclut un lien direct vers sa page dédiée.
+
+![Capture Visualisation paginée](images/streamlit_pagination.jpg)
+
+---
 
 
 ## Developer guide
