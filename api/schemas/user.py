@@ -2,10 +2,12 @@
 from pydantic import BaseModel, EmailStr
 from uuid import UUID
 
+# Vérification que les données insérées et affichées sont conformes aux types attendus
+
 class UserCreate(BaseModel):
     """Schéma pour la création d'un utilisateur"""
     #username: str
-    email: EmailStr
+    email: EmailStr #on vérifie que c'est bien un email
     password: str
 
 class UserLogin(BaseModel):

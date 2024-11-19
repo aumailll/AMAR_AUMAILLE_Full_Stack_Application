@@ -6,7 +6,7 @@ from api.routers import auth, anime, preferences
 from api.models.getdb import engine, BaseSQL
 from fastapi.responses import RedirectResponse
 import os
-from api.models.insert_data import insert_data_from_csv  # Importer la fonction d'insertion des données
+from api.models.insert_data import insert_data_from_csv  
 
 # Fonction pour insérer les données après la création de la base de données
 async def lifespan(app: FastAPI):
@@ -14,8 +14,8 @@ async def lifespan(app: FastAPI):
     BaseSQL.metadata.create_all(bind=engine)
     
     # Insertion des données depuis le fichier CSV
-    csv_file_path = r'Data/anime.csv'  # Le chemin vers ton fichier CSV
-    insert_data_from_csv(csv_file_path)
+    csv_file= r'Data/anime.csv'  
+    insert_data_from_csv(csv_file)
     
     yield
 
@@ -26,7 +26,7 @@ app = FastAPI(lifespan=lifespan)
 async def redirect_to_login():
     return RedirectResponse(url="/auth/")
 
-# Inclure les routes de l'authentification
+# Inclure les routes de l'authentification, anime et preferences 
 app.include_router(auth.router)
 app.include_router(anime.router)
 app.include_router(preferences.router)

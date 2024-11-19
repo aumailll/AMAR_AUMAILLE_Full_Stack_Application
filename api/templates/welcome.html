@@ -81,9 +81,9 @@
         <p>Bienvenue, {{ email }} !</p>
         
         <div class="button-container">
-            <a href="/auth/user_database"><button>Voir la base de données</button></a>
-            <a href="/anime"><button>Voir les Animes</button></a>
-            <a href="/preferences"><button>Faites votre sélection !</button></a>
+            <a href="/auth/user_database?email={{ email }}"><button>Voir la base de données</button></a>
+            <a href="/anime/{{ email }}"><button>Voir les Animes</button></a>
+            <a href="/preferences/{{ email }}"><button>Faites votre sélection !</button></a>
         </div>
     </div>
 

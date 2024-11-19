@@ -3,17 +3,19 @@ from pydantic import BaseModel
 from typing import Optional
 from uuid import UUID
 
+#Vérification que les données correspondent aux types attendus
+# Optional pour type car peut être nul
+
 class AnimeOut(BaseModel):
-    """Schéma pour l'affichage des anime"""
-    id: UUID
+    #id: UUID
     rank: int
     titre: str
     lien: str
     score: float
-    episodes: Optional[int]
-    statut: Optional[str]
-    studio: Optional[str]
-    producteurs: Optional[str]
+    episodes: int
+    statut: str
+    studio: str
+    producteurs: str
     type: Optional[str]
     genres_ET_themes: str
 

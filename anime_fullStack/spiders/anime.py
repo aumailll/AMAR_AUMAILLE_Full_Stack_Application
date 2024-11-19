@@ -1,14 +1,17 @@
 import scrapy
 import csv
 import os
-import html  # Importer le module html pour gérer les entités HTML
+import html  
 
- # Fonction utilitaire pour nettoyer le texte
+
 def clean_text(text):
      if text:
          return ' '.join(text.split()).strip(' \n')
      return ''
 
+# Ojbectif : scraper le site de myanimelist pour extraire les 300 premiers animes
+# Il y a 50 animes par page avec une légère modification de l'url pour accéder aux pages d'après 
+# On liste les URLs auxquels on veut avoir accès : 
 class MyAnimeListSpider(scrapy.Spider):
      name = 'anime'
      allowed_domains = ['myanimelist.net']
@@ -21,14 +24,20 @@ class MyAnimeListSpider(scrapy.Spider):
          'https://myanimelist.net/topanime.php?limit=250',
      ]
 
-     results = []  # Ajout d'une liste pour stocker les résultats
+     results = []  # Stockage des résultats
 
      def __init__(self, *args, **kwargs):
          super(MyAnimeListSpider, self).__init__(*args, **kwargs)
-         csv_file_path = r'D:\E5\Full_stack\Versions-projet\v7\Data\anime.csv'  # Chemin vers le fichier CSV
+          # Chemin vers le fichier CSV
+          # Chemin personnel car on lance le scraping une fois en local pour stocker le fichier
+          # On s'assure juste qu'il sera bien disponible dans le dossier du projet
+         csv_file_path = r'D:\E5\Full_stack\Versions-projet\v7\Data\anime.csv' 
+
+         ## Encapsuler tous les champs entre guillemets pour gérer les caractères spéciaux
          self.file = open(csv_file_path, 'w', newline='', encoding='utf-8')
-         self.writer = csv.writer(self.file, quoting=csv.QUOTE_ALL)  # Encapsuler tous les champs entre guillemets
-         # Écrire l'en-tête du CSV
+         self.writer = csv.writer(self.file, quoting=csv.QUOTE_ALL)  
+
+         # Nom des colonnes = noms dans la bdd pour faciliter
          self.writer.writerow(['rank', 'titre', 'lien', 'score', 'episodes', 'statut', 'studio', 'producteurs', 'type', 'genres_themes'])
 
      def parse(self, response):
@@ -39,7 +48,7 @@ class MyAnimeListSpider(scrapy.Spider):
              item['rank'] = anime.css('.rank span::text').get().strip()
 
              title_element = anime.css('td.title a')
-             # Nettoyer le titre en utilisant html.unescape pour gérer les entités HTML
+             
              item['title'] = html.unescape(title_element.css('img::attr(alt)').get()).replace('Anime: ', '')  # Correction du format
 
              item['link'] = title_element.css('::attr(href)').get()
@@ -73,15 +82,15 @@ class MyAnimeListSpider(scrapy.Spider):
              # Écrire chaque résultat dans le fichier CSV
              self.writer.writerow([
                  result['rank'],
-                 result['title'],  # Le titre est déjà nettoyé et peut contenir des caractères spéciaux
+                 result['title'],  
                  result['link'],
                  result['score'],
                  result['episodes'],
                  result['statut'],
-                 ', '.join(result['studio']),  # Joindre les studios en une seule chaîne
-                 ', '.join(result['producteurs']),  # Joindre les producteurs en une seule chaîne
+                 ', '.join(result['studio']),  
+                 ', '.join(result['producteurs']),  
                  result['type'],
-                 ', '.join(result['genres_ET_themes']),  # Joindre les genres en une seule chaîne
+                 ', '.join(result['genres_ET_themes']),  # Joindre les genres : thèmes en une seule chaîne
              ])
 
          self.file.close()  # Fermer le fichier lors de la fermeture de la spider

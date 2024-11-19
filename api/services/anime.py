@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 import pandas as pd
 import psycopg2
 
-# Définir les colonnes correspondant à la table
+# Les noms de colonnes choisis pour l'affichage 
 CUSTOM_COLUMNS = [
     "Rang", "Titre", "Score", "Episodes", "Statut",
     "Studio", "Producteurs", "Type", "Genres_ET_Themes", "Lien"
@@ -20,10 +20,10 @@ def get_anime_data(db: Session):
         list[dict]: Une liste de dictionnaires contenant les informations des animes.
     """
     try:
-        # Exécuter la requête SQL pour récupérer les données
+        # Cette requête permet de sélectionner toutes les colonnes de la table
         animes = db.execute(text("SELECT * FROM anime")).fetchall()
         
-        # Transformer les résultats en liste de dictionnaires
+        # Transformer les résultats en liste de dictionnaires : maping entre les colonnes affichées et nos noms de colonnes dans la table
         anime_list = [dict(zip(CUSTOM_COLUMNS, anime)) for anime in animes]
 
         return anime_list
@@ -58,10 +58,10 @@ def fetch_anime_data():
         pandas.DataFrame: Les données des animes sous forme de DataFrame.
     """
     try:
-        # Connexion à la base de données PostgreSQL
+        # Connexion à la base de données Postgres
         conn = psycopg2.connect(DATABASE_URL)
-        query = "SELECT * FROM anime;"  # Requête SQL
-        df = pd.read_sql(query, conn)  # Charger les données dans un DataFrame
+        query = "SELECT * FROM anime;"  # Requête SQL pour tout prendre
+        df = pd.read_sql(query, conn)  # Charger les données dans un df
         conn.close()
 
         # Renommer les colonnes selon le mapping
@@ -76,16 +76,17 @@ def fetch_anime_data():
     
 def get_unique_genres(db: Session):
     """
-    Récupère la liste des genres uniques des animes.
+    Récupère la liste des genres uniques des animes
 
     Args:
-        db (Session): La session SQLAlchemy pour interroger la base de données.
+        db (Session): La session SQLAlchemy pour interroger la base de données
 
     Returns:
-        list: Liste triée des genres uniques.
+        list: Liste triée des genres, thèmes uniques
     """
     try:
-        # Exécuter la requête SQL pour récupérer les genres des animes
+        # Exécuter la requête SQL pour récupérer exclusivement les genres, thèmes des animes
+        # Sera utile pour afficher les animes d'un genre en particulier
         query = text("SELECT genres_themes FROM anime")  # Récupère la colonne genres_themes
         result = db.execute(query).fetchall()
 
@@ -125,7 +126,7 @@ def fetch_data(db: Session):
 
         # Vérifier si des résultats existent
         if result:
-            # Colonnes correspondant à la table "anime"
+            # Colonnes correspondant à la table anime
             columns = [
                 "rank", "titre", "score", "episodes", "statut",
                 "studio", "producteurs", "type", "genres_themes", "lien"
