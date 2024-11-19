@@ -44,7 +44,15 @@ def dashboard_preferences_utilisateur():
 
         st.title("Rechercher avec le genre ou le thème")
 
-        selected_genres = st.multiselect("Choisissez un ou plusieurs genres/thèmes", genres)
+        default_genres = ["Action", "Award Winning"]
+        
+        available_defaults = [genre for genre in default_genres if genre in genres]
+
+        selected_genres = st.multiselect(
+            "Choisissez un ou plusieurs genres/thèmes",
+            genres,
+            default=available_defaults
+        )
 
         if selected_genres:
             data = fetch_data(db)
@@ -85,3 +93,4 @@ def dashboard_preferences_utilisateur():
 
     finally:
         db.close()
+
