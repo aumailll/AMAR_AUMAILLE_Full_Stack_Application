@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette_exporter import PrometheusMiddleware, handle_metrics
-from api.routers import auth, anime
+from api.routers import auth, anime, preferences
 from api.models.getdb import engine, BaseSQL
 from fastapi.responses import RedirectResponse
 import os
@@ -29,6 +29,7 @@ async def redirect_to_login():
 # Inclure les routes de l'authentification
 app.include_router(auth.router)
 app.include_router(anime.router)
+app.include_router(preferences.router)
 
 
 # Monter le répertoire statique

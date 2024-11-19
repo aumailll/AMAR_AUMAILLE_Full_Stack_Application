@@ -42,6 +42,7 @@ def signup(
     response.set_cookie("email", email)  # Stocke l'email dans un cookie
     return response
 
+
 # Route pour la connexion de l'utilisateur
 @router.post("/login")
 def login(

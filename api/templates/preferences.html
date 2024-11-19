@@ -1,0 +1,16 @@
+<form method="get" action="/preferences">
+    <input type="text" name="query" value="{{ query }}" placeholder="Rechercher un anime...">
+    <button type="submit">Rechercher</button>
+</form>
+
+<ul>
+    {% for anime in results %}
+    <li>
+        {{ anime.title }}
+        <form method="post" action="/preferences/add_anime">
+            <input type="hidden" name="anime_id" value="{{ anime.id }}">
+            <button type="submit">Ajouter à ma liste</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>

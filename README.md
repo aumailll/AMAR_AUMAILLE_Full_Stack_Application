@@ -1,5 +1,7 @@
 # Les 300 meilleurs animes du moment 
 
+  FAUDRAIT PRECISER LE TEMPS QUE CA MET POUR COMPILER
+
 ## Table des matières 
 - [Les 300 meilleurs animes du moment](#les-300-meilleurs-animes-du-moment)
   - [Table des matières](#table-des-matières)
