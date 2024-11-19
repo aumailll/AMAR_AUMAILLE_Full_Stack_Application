@@ -3,11 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion / Inscription</title>
+    <title>Connexion </title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <h1>Bienvenue</h1>
+    <div class="description">
+        <p>
+            Bonjour, veuillez renseigner vos identifiants de connexion dans le formulaire ci-dessous
+        </p>
+    </div>
     <div class="form-container">
         <h2>Connexion</h2>
         <form action="/auth/login" method="post">
@@ -18,15 +23,6 @@
             <button type="submit">Se connecter</button>
         </form>
     </div>
-    <div class="form-container">
-        <h2>Première connexion</h2>
-        <form action="/auth/signup" method="post">
-            <label for="email-signup">Email :</label>
-            <input type="email" id="email-signup" name="email" required>
-            <label for="password-signup">Mot de passe :</label>
-            <input type="password" id="password-signup" name="password" required>
-            <button type="submit">S'inscrire</button>
-        </form>
-    </div>
-</body>
-</html>
+    <p>Pas encore inscrit ? <a href="/auth">Inscrivez-vous ici</a>.</p>
+    
+   

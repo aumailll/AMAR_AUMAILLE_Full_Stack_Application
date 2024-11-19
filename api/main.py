@@ -32,8 +32,9 @@ app.include_router(anime.router)
 app.include_router(preferences.router)
 
 
-# Monter le répertoire statique
+# Monter le répertoire statique et images
 app.mount("/static", StaticFiles(directory="api/static"), name="static")
+app.mount("/images", StaticFiles(directory="images"), name="images")
 
 # Configuration des templates
 templates = Jinja2Templates(directory="api/templates")

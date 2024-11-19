@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les 300 Meilleurs Animes du Moment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            color: #333;
+        }
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .description {
+            max-width: 800px;
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: justify;
+            color: #555;
+            font-size: 1.1em;
+        }
+        .description a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .description a:hover {
+            text-decoration: underline;
+        }
+        .form-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1em;
+            color: #555;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .already-registered {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .already-registered a {
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .already-registered a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Les 300 Meilleurs Animes du Moment !</h1>
+
+    <div class="image-container">
+        <img src="/images/anime.png" alt="Image anime">
+    </div>
+
+    <div class="description">
+        <p>
+            Bonjour et bienvenue sur notre application ! 
+            Dans le cadre de l'unité *Application Full Stack* dispensée par 
+            <strong>M. Morgan Courivaud</strong>, nous avons réalisé cette application permettant à chaque individu de naviguer librement (connexion requise). 
+        </p>
+        <p>
+            Vous pourrez découvrir des informations et statistiques intéressantes sur les 300 meilleurs animes du moment d'après le site 
+            <a href="https://myanimelist.net/topanime.php" target="_blank">MyAnimeList</a>. Plusieurs pages sont accessibles via des boutons. Nous vous laissons les découvrir !
+        </p>
+        <p>
+            Il est prérequis de s'inscrire. Veuillez donc remplir le formulaire suivant :
+        </p>
+    </div>
+
+    <div class="form-container">
+        <h2>Première connexion</h2>
+        <form action="/auth/signup" method="post">
+            <label for="email-signup">Email :</label>
+            <input type="email" id="email-signup" name="email" required>
+            
+            <label for="password-signup">Mot de passe :</label>
+            <input type="password" id="password-signup" name="password" required>
+            
+            <button type="submit">S'inscrire</button>
+        </form>
+
+        <div class="already-registered">
+            <p>Déjà inscrit ? <a href="/auth/login">Connectez-vous ici</a>.</p>
+        </div>
+    </div>
+</body>
+</html>
