@@ -92,6 +92,12 @@ Une fois Docker bien installé, vous pouvez réaliser les étapes de lancement d
 - Dans l'application Docker Desktop, appyez sur "Start Engine" pour démarrer Docker
 - Allez dans le répértoire contenant le projet cloné 
 - Copiez la commande suivante : docker compose up --build
+- Faites ctrl + c pour arrêter les conteneurs (et donc l'application)
+
+Nous vous conseillons également (pour votre espace de stockage) de faire : 
+- docker compose down
+- docker volume rm nom_volume (pour voir les volumes, faites : docker volume ls)
+
 
 Il faudra sûrement attendre quelques instants le temps que les conteneurs démarrent et que le téléchargement des données d'anime dans la base de données s'effectue. Voici ce que vous devriez voir dans le terminal une fois que l'application est prête à être utilisée : 
 ![Terminal Docker](images/terminal_docker.jpg)
