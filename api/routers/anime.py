@@ -38,13 +38,13 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from api.models.getdb import get_db
 from api.services.anime import get_anime_data
-from api.services.utils import validate_email_in_url
+from api.services.utils import validate_email_user
 
 router = APIRouter(prefix="/anime", tags=["Anime"])
 templates = Jinja2Templates(directory="api/templates")
 
 @router.get("/{email}")
-def show_anime(request: Request, email: str = Depends(validate_email_in_url), db: Session = Depends(get_db), format: str = "html"):
+def show_anime(request: Request, email: str = Depends(validate_email_user), db: Session = Depends(get_db), format: str = "html"):
     """
     Affiche les données des animes depuis la base de données.
     """

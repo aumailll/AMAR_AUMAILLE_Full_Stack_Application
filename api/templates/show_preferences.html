@@ -3,18 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste de vos Animes Préférés</title>
+    <title>Mes Animes Préférés</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>Liste de vos Animes Préférés</h1>   
-    <a href="http://localhost:8501" target="_blank">
-        <button>Accéder au Tableau de Bord</button>
-    </a> 
+    <h1>Mes Animes Préférés</h1>
+
+    <a href="/auth/welcome/{{ email }}">
+        <button>Retour à la page d'accueil</button>
+    </a>
+
     <table border="1">
         <thead>
             <tr>
-                <!-- Colonnes personnalisées -->
-                <th>Rang</th>
+                <th>Classement</th>
                 <th>Titre</th>
                 <th>Score</th>
                 <th>Episodes</th>
@@ -22,7 +61,7 @@
                 <th>Studio</th>
                 <th>Producteurs</th>
                 <th>Type</th>
-                <th>Genres & Thèmes</th>
+                <th>Genres et Thèmes</th>
                 <th>Lien</th>
             </tr>
         </thead>
@@ -30,20 +69,23 @@
             {% for anime in user_animes %}
             <tr>
                 <td>{{ anime.rank }}</td>
-                <td>{{ anime.title }}</td>
+                <td>{{ anime.titre }}</td>
                 <td>{{ anime.score }}</td>
                 <td>{{ anime.episodes }}</td>
-                <td>{{ anime.status }}</td>
+                <td>{{ anime.statut }}</td>
                 <td>{{ anime.studio }}</td>
-                <td>{{ anime.producers }}</td>
+                <td>{{ anime.producteurs }}</td>
                 <td>{{ anime.type }}</td>
-                <td>{{ anime['Genres & Themes'] }}</td>
-                <td><a href="{{ anime.link }}" target="_blank">Voir</a></td>
+                <td>{{ anime.genres_themes }}</td>
+                <td><a href="{{ anime.lien }}">Voir</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <br>
-    <a href="/preferences/{{ email }}"><button>Retour à la recherche d'animes</button></a>
+    
+
+    {% if not user_animes %}
+    <p>Aucun anime trouvé dans votre liste pour le moment.</p>
+    {% endif %}
 </body>
 </html>

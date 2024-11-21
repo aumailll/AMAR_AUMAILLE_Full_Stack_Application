@@ -1,16 +1,95 @@
-<form method="get" action="/preferences/{{ email }}">
-    <input type="text" name="query" value="{{ query }}" placeholder="Rechercher un anime...">
-    <button type="submit">Rechercher</button>
-</form>
+<!-- <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche Anime</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Recherche d'Anime</h1>
+    <form method="GET" action="/anime/search_results/">
+        <label for="query">Rechercher un anime :</label>
+        <input type="text" id="query" name="query" placeholder="Nom de l'anime">
+        <button type="submit">Rechercher</button>
+    </form>
+</body>
+</html> -->
 
-<ul>
-    {% for anime in results %}
-    <li>
-        {{ anime.title }}
-        <form method="post" action="/preferences/{{ email }}/add_anime">
-            <input type="hidden" name="anime_id" value="{{ anime.id }}">
-            <button type="submit">Ajouter à ma liste</button>
-        </form>
-    </li>
-    {% endfor %}
-</ul>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Anime</title>
+</head>
+<body>
+    <h1>Search Anime</h1>
+    <form action="/anime/search_anime" method="get">
+        <label for="query">Search:</label>
+        <input type="text" id="query" name="query" required>
+        <button type="submit">Search</button>
+    </form>
+</body>
+</html>  -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Anime</title>
+</head>
+<body>
+    <h1>Search Anime</h1>
+    
+    <form action="/preferences/{{ email }}" method="get">
+        <label for="query">Search:</label>
+        <input type="text" id="query" name="query" value="{{ query }}" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <pre>{{ results }}</pre>
+
+    {% if results %}
+        <h2>Search Results</h2>
+        <ul>
+            {% for anime in results %}
+                <li>
+                    <strong>{{ anime.titre }}</strong> - Rank: {{ anime.rank }}
+                    <!-- Formulaire POST pour ajouter l'anime -->
+                    <form action="/preferences/{{ email }}/add_anime" method="post" style="display:inline;">
+                        <input type="hidden" name="anime_rank" value="{{ anime.rank }}">
+                        <button type="submit">Add to My List</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        {% if query %}
+            <p>No anime found for "{{ query }}".</p>
+        {% endif %}
+    {% endif %}
+
+    <form action="/preferences/{{ email }}/show_preferences" method="get" style="display:inline;">
+        <button type="submit" class="btn btn-primary">Voir mes préférences</button>
+    </form>
+
+    <!-- Affichage des messages -->
+    {% if request.query_params.get('message') %}
+        <p>{{ request.query_params.get('message') }}</p>
+    {% endif %}
+</body>
+</html>
+
+
+
+
+
+
+
+

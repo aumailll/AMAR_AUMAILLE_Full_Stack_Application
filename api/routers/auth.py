@@ -196,35 +196,5 @@ def database_page(request: Request, email: str = Cookie(None), db: Session = Dep
     users = db.query(User).all()
     return templates.TemplateResponse("user_database.html", {"request": request, "users": users, "email": email})
 
-# Route pour les préférences utilisateur
-@router.get("/preferences/{email}")
-def preferences_page(request: Request, email: str, db: Session = Depends(get_db)):
-    """Affiche la page des préférences utilisateur."""
-    db_user = db.query(User).filter(User.email == email).first()
-    if not db_user:
-        # Redirige vers la page d'erreur personnalisée
-        return templates.TemplateResponse("error.html", {
-            "request": request,
-            "error_message": "Utilisateur non trouvé.",
-            "detail": "Aucun utilisateur n'a été trouvé avec cet email. Veuillez vérifier votre adresse email."
-        })
-    
-    # Exemple : récupérez des données personnalisées pour l'utilisateur ici
-    return templates.TemplateResponse("preferences.html", {"request": request, "email": email})
 
-# Route pour afficher la liste des animes
-@router.get("/anime/{email}")
-def show_anime(request: Request, email: str, db: Session = Depends(get_db)):
-    """Affiche les animes."""
-    db_user = db.query(User).filter(User.email == email).first()
-    if not db_user:
-        # Redirige vers la page d'erreur personnalisée
-        return templates.TemplateResponse("error.html", {
-            "request": request,
-            "error_message": "Utilisateur non trouvé.",
-            "detail": "Aucun utilisateur n'a été trouvé avec cet email. Veuillez vérifier votre adresse email."
-        })
-    
-    # Exemple : récupérer les animes depuis la base ou une API
-    animes = []  # Remplacez par les données réelles
-    return templates.TemplateResponse("anime.html", {"request": request, "email": email, "animes": animes})
+

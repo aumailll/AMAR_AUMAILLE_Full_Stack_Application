@@ -1,103 +1,76 @@
-# from fastapi import APIRouter, Request, HTTPException, Depends, Cookie
-# from fastapi.responses import RedirectResponse
-# from sqlalchemy.orm import Session
-# from api.services.preferences import search_anime, add_anime_to_user
-# from api.models.getdb import get_db
-# from api.models.create_db import UserAnime , User, Anime
-# from fastapi.templating import Jinja2Templates
-
-# templates = Jinja2Templates(directory="api/templates")
-# router = APIRouter(prefix="/preferences", tags=["Preferences"])
-
-# @router.get("/")
-# def preferences_page(request: Request, email: str = Cookie(None), query: str = "", db: Session = Depends(get_db)):
-#     """Page des préférences avec recherche d'anime et ajout à la base de données."""
-#     if not email:
-#         raise HTTPException(status_code=401, detail="Non authentifié.")
-    
-#     results = []
-#     if query:
-#         results = search_anime(query, db)  # Recherche d'animes dans la base de données
-    
-#     return templates.TemplateResponse("preferences.html", {
-#         "request": request, 
-#         "email": email, 
-#         "results": results,
-#         "query": query  # Pré-remplir la barre de recherche
-#     })
-
-# @router.post("/add_anime")
-# def add_anime_to_user_page(anime_id: int, email: str = Cookie(None), db: Session = Depends(get_db)):
-#     """Ajoute un anime sélectionné à la base de données de l'utilisateur."""
-#     if not email:
-#         raise HTTPException(status_code=401, detail="Non authentifié.")
-    
-#     add_anime_to_user(anime_id, email, db)  # Ajout de l'anime à la base de données de l'utilisateur
-    
-#     # Redirection vers la page pour voir les animes enregistrés
-#     return RedirectResponse(url="/preferences/show_database", status_code=303)
-
-# @router.get("/show_database")
-# def show_user_animes(request: Request, email: str = Cookie(None), db: Session = Depends(get_db)):
-#     """Affiche les animes enregistrés par l'utilisateur dans la base de données."""
-#     if not email:
-#         raise HTTPException(status_code=401, detail="Non authentifié.")
-    
-#     # Récupération de l'utilisateur depuis son email
-#     user = db.query(User).filter(User.email == email).first()
-#     if not user:
-#         raise HTTPException(status_code=404, detail="Utilisateur non trouvé.")
-    
-#     # On récupère les animes associés à l'utilisateur
-#     user_animes = db.query(Anime).join(UserAnime).filter(UserAnime.user_id == user.id).all()
-    
-#     return templates.TemplateResponse("show_preferences.html", {
-#         "request": request, 
-#         "email": email, 
-#         "user_animes": user_animes
-#     })
-
-
 from fastapi import APIRouter, Request, HTTPException, Depends, Cookie
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from api.services.preferences import search_anime, add_anime_to_user
+from api.services.preferences import search_anime, add_anime_to_user, get_user_animes
 from api.models.getdb import get_db
-from api.models.create_db import UserAnime, User, Anime
 from fastapi.templating import Jinja2Templates
-from api.services.utils import validate_email_in_url
+from api.services.utils import validate_email_user
+from fastapi import Form
+from api.models.create_db import User
 
 templates = Jinja2Templates(directory="api/templates")
 router = APIRouter(prefix="/preferences", tags=["Preferences"])
 
 @router.get("/{email}")
-def preferences_page(request: Request, email: str = Depends(validate_email_in_url), query: str = "", db: Session = Depends(get_db)):
+def preferences_page(
+    request: Request, 
+    email: User = Depends(validate_email_user),
+    query: str = "", 
+    db: Session = Depends(get_db)
+):
     """Page des préférences avec recherche d'anime et ajout à la base de données."""
-    results = search_anime(query, db) if query else []
-    
+    results = []
+    if query:
+        results = search_anime(query, db)  # Appel au service de recherche
     return templates.TemplateResponse("preferences.html", {
         "request": request,
         "email": email.email,
         "results": results,
-        "query": query  # Pré-remplir la barre de recherche
+        "query": query
     })
+
+from fastapi.responses import RedirectResponse
+from fastapi import HTTPException
+
 
 @router.post("/{email}/add_anime")
-def add_anime_to_user_page(anime_id: int, email: str = Depends(validate_email_in_url), db: Session = Depends(get_db)):
-    """Ajoute un anime sélectionné à la base de données de l'utilisateur."""
-    add_anime_to_user(anime_id, email.email, db)  # Ajout de l'anime à la base de données
-    
-    # Redirection vers la page pour voir les animes enregistrés
-    return RedirectResponse(url=f"/preferences/{email.email}/show_database", status_code=303)
+def add_anime(
+    request: Request, 
+    anime_rank: int = Form(...),  # Récupère anime_rank depuis un formulaire
+    user :User = Depends(validate_email_user), 
+    db: Session = Depends(get_db)
+):
+    try:
+        # Ajouter l'anime aux préférences de l'utilisateur
+        add_anime_to_user(anime_rank, user.email, db)
+        
+        # Retourner le template de succès
+        return templates.TemplateResponse("ajout_anime.html", {"request": request, "email": user.email, "message": "Anime ajouté avec succès."})
 
-@router.get("/{email}/show_database")
-def show_user_animes(request: Request, email: str = Depends(validate_email_in_url), db: Session = Depends(get_db)):
-    """Affiche les animes enregistrés par l'utilisateur dans la base de données."""
-    # On récupère les animes associés à l'utilisateur
-    user_animes = db.query(Anime).join(UserAnime).filter(UserAnime.user_id == email.id).all()
-    
-    return templates.TemplateResponse("show_preferences.html", {
-        "request": request,
-        "email": email.email,
-        "user_animes": user_animes
-    })
+    except HTTPException as e:
+        # En cas d'erreur, on redirige avec un template error.html
+        return templates.TemplateResponse(
+            "error.html", 
+            {
+                "request": request, 
+                "error_message": e.detail,  # Message d'erreur à afficher
+                "detail": "Veuillez réessayer."  # Détails supplémentaires
+            }
+        )
+
+
+@router.get("/{email}/show_preferences")
+async def show_preferences(
+    request: Request,
+    user: User = Depends(validate_email_user),  # Directement valider l'utilisateur
+    db: Session = Depends(get_db)
+):
+    user_animes = get_user_animes(user.id, db)  # On récupère les animes via l'UUID
+    return templates.TemplateResponse(
+        "show_preferences.html",
+        {
+            "request": request,
+            "user_animes": user_animes,
+            "email": user.email,  # Renvoyer l'email au template si nécessaire
+        },
+    )
