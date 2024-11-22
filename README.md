@@ -101,7 +101,7 @@ Nous vous conseillons également (pour votre espace de stockage) de faire :
 - docker volume rm nom_volume (pour voir les volumes, faites : docker volume ls)
 
 
-Il faudra sûrement attendre quelques instants le temps que les conteneurs démarrent et que le téléchargement des données d'anime dans la base de données s'effectue. Voici ce que vous devriez voir dans le terminal une fois que l'application est prête à être utilisée : 
+Il faudra sûrement attendre quelques minutes le temps que les conteneurs démarrent et que le téléchargement des données d'anime dans la base de données s'effectue. Voici ce que vous devriez voir dans le terminal une fois que l'application est prête à être utilisée : 
 ![Terminal Docker](images/terminal_docker.jpg)
 
 Enfin, copiez la ligne suivante dans votre navigateur favori : http://localhost:8000 . Ce lien vous mène à notre application. 
