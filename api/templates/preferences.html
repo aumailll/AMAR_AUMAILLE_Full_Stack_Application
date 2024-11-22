@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sauvegardez vos animes !</title>
     <style>
-        /* Général */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f0f0f5;
@@ -15,7 +14,6 @@
             color: #333;
         }
 
-        /* Titre avec images */
         .header {
             display: flex;
             align-items: center;
@@ -25,23 +23,22 @@
         }
 
         .side-image {
-            width: 120px;  /* Limiter la largeur des images */
+            width: 120px;
             height: 300px;
-            object-fit: cover; /* S'assure que l'image est bien contenue */
+            object-fit: cover;
             margin: 0 15px;
             position: absolute;
             top: 0;
-            z-index: 0; /* Les images en arrière-plan */
+            z-index: 0;
         }
 
         h1 {
             font-size: 2.5rem;
             margin: 0;
             position: relative;
-            z-index: 1; /* Le titre au-dessus des images */
+            z-index: 1; 
         }
 
-        /* Boutons de navigation */
         .button-container {
             margin: 20px 0;
         }
@@ -67,7 +64,6 @@
             transform: translateY(1px);
         }
 
-        /* Conteneur de recherche */
         .search-container {
             margin: 20px 0;
             padding: 20px;
@@ -80,7 +76,7 @@
 
         input[type="text"] {
             padding: 10px;
-            width: 80%; /* Ajuster la largeur de l'input */
+            width: 80%;
             margin-right: 10px;
             border-radius: 5px;
             border: 1px solid #ddd;
@@ -134,15 +130,15 @@
     <!-- Titre avec images -->
     <div class="header">
         <img src="/images/naruto.png" alt="Left" class="side-image" style="left: 0;">
-        <h1>Search Anime</h1>
+        <h1>Sauvegardez vos Animes !</h1>
         <img src="/images/sasuke.png" alt="Right" class="side-image" style="right: 0;">
     </div>
 
     <!-- Boutons de navigation -->
     <div class="button-container">
-        <a href="/auth/user_database?email={{ email }}"><button>Revenir à la page d'accueil</button></a>
+        <a href="/auth/welcome/{{ email }}"><button>Revenir à la page d'accueil</button></a>
         <a href="/anime/{{ email }}"><button>Voir les Animes</button></a>
-        <a href="/preferences/{{ email }}"><button>Faites votre sélection !</button></a>
+        <a href="/preferences/{{ email }}/show_preferences"><button>Voir la liste d'Anime enregistrée</button></a> 
     </div>
 
     <!-- Conteneur de recherche -->
@@ -154,7 +150,6 @@
     </div>
 
     <!-- Résultats de recherche -->
-    <!-- Résultats de recherche -->
 <div class="results">
     {% if results %}
         <h2>Search Results</h2>
@@ -164,7 +159,7 @@
                     <strong>{{ anime.titre }}</strong> - Rank: {{ anime.rank }}
                     <form action="/preferences/{{ email }}/add_anime" method="post" style="display:inline;">
                         <input type="hidden" name="anime_rank" value="{{ anime.rank }}">
-                        <button type="submit">Add to My List</button>
+                        <button type="submit">Ajouter à ma liste</button>
                     </form>
                 </li>
             {% endfor %}

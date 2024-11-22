@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message de Confirmation</title>
+    <title>Message de confirmation</title>
     <style>
-        /* Style de base */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7fc;
             background-image: url('/images/preferences.jpeg');
-            background-size: cover; /* Couvre toute la fenêtre sans déformer l'image */
-            background-position: center; /* Centre l'image */
-            background-repeat: no-repeat; /* Empêche la répétition de l'image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             margin: 0;
             padding: 0;
             display: flex;
@@ -23,14 +22,14 @@
         }
 
             .container {
-        background-color: rgba(255, 255, 255, 0.8); /* Blanc avec 80% d'opacité */
+        background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         width: 80%;
         max-width: 700px;
         text-align: center;
-        position: relative; /* Pour que l'image de fond soit bien positionnée */
+        position: relative; 
     }
 
         h1 {
@@ -97,9 +96,9 @@
         <p class="message">L'anime a bien été ajouté à vos préférences.</p>
         <div>
             <!-- Les boutons -->
-            <a href="/preferences/{{ email }}"><button>Revenir aux préférences !</button></a>
+            <a href="/preferences/{{ email }}"><button>Revenir aux préférences</button></a>
             <a href="/auth/welcome/{{ email }}"><button>Retour à la page de bienvenue</button></a> 
-            <a href="/anime/{{ email }}"><button>Voir les Animes</button></a>
+            <a href="/preferences/{{ email }}/show_preferences"><button>Voir la liste d'Anime enregistrée</button></a> 
         </div>
     </div>
 

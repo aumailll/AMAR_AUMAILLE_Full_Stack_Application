@@ -3,57 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Animes Préférés</title>
+    <title>Mes Animes préférés</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
         }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
         }
-        table, th, td {
-            border: 1px solid black;
+
+        .description {
+            margin: 0 auto 30px;
+            font-size: 0.9em; 
+            color: #555;
+            max-width: 700px;
+            line-height: 1.5;
         }
-        th, td {
-            padding: 10px;
-            text-align: center;
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
         }
-        th {
-            background-color: #f2f2f2;
-        }
-        a {
-            text-decoration: none;
-            color: white;
-        }
-        button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
+
+        .button-container button {
             padding: 10px 20px;
-            text-align: center;
-            font-size: 14px;
-            cursor: pointer;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
             border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        button:hover {
-            background-color: #45a049;
+
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto 50px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .link {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        .no-animes {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
-    <h1>Mes Animes Préférés</h1>
+    <h1>Liste de mes Animes à regarder </h1>
 
-    <a href="/auth/welcome/{{ email }}">
-        <button>Retour à la page d'accueil</button>
-    </a>
+    <div class="button-container">
+        <a href="/auth/welcome/{{ email }}">
+            <button>Retour à la page d'accueil</button>
+        </a>
+        <a href="/preferences/{{ email }}"><button>Revenir aux préférences</button></a>
+    </div>
 
-    <table border="1">
+    <table>
         <thead>
             <tr>
-                <th>Classement</th>
+                <th>Rang</th>
                 <th>Titre</th>
                 <th>Score</th>
                 <th>Episodes</th>
@@ -61,7 +119,7 @@
                 <th>Studio</th>
                 <th>Producteurs</th>
                 <th>Type</th>
-                <th>Genres et Thèmes</th>
+                <th>Genres & Thèmes</th>
                 <th>Lien</th>
             </tr>
         </thead>
@@ -77,15 +135,14 @@
                 <td>{{ anime.producteurs }}</td>
                 <td>{{ anime.type }}</td>
                 <td>{{ anime.genres_themes }}</td>
-                <td><a href="{{ anime.lien }}">Voir</a></td>
+                <td><a class="link" href="{{ anime.lien }}" target="_blank">Voir</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
 
     {% if not user_animes %}
-    <p>Aucun anime trouvé dans votre liste pour le moment.</p>
+    <p class="no-animes">Aucun anime trouvé dans votre liste pour le moment.</p>
     {% endif %}
 </body>
 </html>

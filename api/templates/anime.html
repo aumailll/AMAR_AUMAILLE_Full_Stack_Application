@@ -1,19 +1,138 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Animes</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            margin: 0 auto 30px;
+            font-size:  0.9em; 
+            color: #555;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .totoro-images {
+            width: auto;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+
+        .totoro-images img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto 50px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .link {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Liste des Animes</h1>
-    <table border="1">
+    <h1>Classement des Animes</h1>
+    
+    <div class="description">
+        Retrouvez ci-dessous le classement des 300 meilleurs animes. Vous pouvez également accéder à un tableau de bord interactif via le lien ci-dessous pour analyser ce classement et découvrir quel anime correspond le mieux à vos préférences !
+    </div>
+    
+    <div class="button-container">
+        <a href="http://localhost:8501" target="_blank">
+            <button>Accéder au tableau de bord</button>
+        </a>
+        <a href="/auth/welcome/{{ email }}">
+            <button>Retour à la page de bienvenue</button>
+        </a>
+    </div>
+
+    <div class="totoro-images">
+        <img src="/images/v1.webp" alt="Illustration d'Animes">
+    </div>
+
+    <table>
         <thead>
             <tr>
                 <th>Rang</th>
                 <th>Titre</th>
                 <th>Score</th>
-                <th>Épisodes</th>
+                <th>Episodes</th>
                 <th>Statut</th>
                 <th>Studio</th>
                 <th>Producteurs</th>
@@ -25,74 +144,19 @@
         <tbody>
             {% for anime in animes %}
             <tr>
-                <td>{{ anime.rank }}</td>
-                <td>{{ anime.title }}</td>
-                <td>{{ anime.score }}</td>
-                <td>{{ anime.episodes }}</td>
-                <td>{{ anime.status }}</td>
-                <td>{{ anime.studio }}</td>
-                <td>{{ anime.producers }}</td>
-                <td>{{ anime.type }}</td>
-                <td>{{ anime['Genres & Themes'] }}</td>
-                <td><a href="{{ anime.link }}" target="_blank">Voir</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <a href="/auth/welcome"><button>Retour à la page de bienvenue</button></a>
-</body>
-</html> -->
-
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Animes</title>
-</head>
-<body>
-    <h1>Liste des Animes</h1>   
-    <a href="http://localhost:8501" target="_blank">
-        <button>Accéder au Tableau de Bord</button>
-        <a href="/auth/welcome/{{ email }}"><button>Retour à la page de bienvenue</button></a> 
-    </a> 
-    <table border="1">
-        <thead>
-            <tr>
-                <!-- Colonnes personnalisées -->
-                <th>Rang</th>
-                <th>Titre</th>
-                <th>Score</th>
-                <th>Episodes</th>
-                <th>Statut</th>
-                <th>Studio</th>
-                <th>Producteurs</th>
-                <th>Type</th>
-                <th>Genres_ET_Themes</th>
-                <th>Lien</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for anime in animes %}
-            <tr>
                 <td>{{ anime["Rang"] }}</td>
                 <td>{{ anime["Titre"] }}</td>
-                <td>{{ anime["Score"] }}</td> <!-- Corrigé ici -->
+                <td>{{ anime["Score"] }}</td> 
                 <td>{{ anime["Episodes"] }}</td>
                 <td>{{ anime["Statut"] }}</td>
                 <td>{{ anime["Studio"] }}</td>
                 <td>{{ anime["Producteurs"] }}</td>
                 <td>{{ anime["Type"] }}</td>
                 <td>{{ anime["Genres_ET_Themes"] }}</td>
-                <td>{{ anime["Lien"] }}</td> <!-- Corrigé ici -->
+                <td><a class="link" href="{{ anime["Lien"] }}" target="_blank">Voir</a></td>
             </tr>
             {% endfor %}
         </tbody>
-        
     </table>
-    <br>
-    
 </body>
 </html>
