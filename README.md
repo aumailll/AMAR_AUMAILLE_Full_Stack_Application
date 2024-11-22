@@ -91,7 +91,7 @@ Premièrement, il vous faut cloner notre projet git, pour cela :
 Pour pouvoir tester et utilisation l'application, il faut disposer de Docker. Si vous ne possédez pas Docker, rendez-vous sur la page de téléchargement officielle de Docker (pour Windows) [ici](https://www.docker.com/products/docker-desktop/). Suivez les instructions d'installation affichées à l'écran ensuite.
 
 Une fois Docker bien installé, vous pouvez réaliser les étapes de lancement de l'application : 
-- Dans l'application Docker Desktop, appyez sur "Start Engine" pour démarrer Docker
+- Dans l'application Docker Desktop, appuyez sur "Start Engine" pour démarrer Docker
 - Allez dans le répértoire contenant le projet cloné 
 - Copiez la commande suivante : docker compose up --build
 - Faites ctrl + c pour arrêter les conteneurs (et donc l'application)
@@ -101,7 +101,7 @@ Nous vous conseillons également (pour votre espace de stockage) de faire :
 - docker volume rm nom_volume (pour voir les volumes, faites : docker volume ls)
 
 
-Il faudra sûrement attendre quelques instants le temps que les conteneurs démarrent et que le téléchargement des données d'anime dans la base de données s'effectue. Voici ce que vous devriez voir dans le terminal une fois que l'application est prête à être utilisée : 
+Il faudra sûrement attendre quelques minutes le temps que les conteneurs démarrent et que le téléchargement des données d'anime dans la base de données s'effectue. Voici ce que vous devriez voir dans le terminal une fois que l'application est prête à être utilisée : 
 ![Terminal Docker](images/terminal_docker.jpg)
 
 Enfin, copiez la ligne suivante dans votre navigateur favori : http://localhost:8000 . Ce lien vous mène à notre application. 
@@ -129,7 +129,7 @@ Le projet initial avait pour but d'explorer les données à l’aide de Python e
 Pour enrichir l’étude initiale et construire une application web robuste et modulaire, nous avons utilisé **FastAPI** pour structurer l’API qui alimente le tableau de bord. Voici les principales étapes et choix que nous avons réalisés pour adapter le projet :
 
 1. **Création d’une base de données relationnelle (PostgreSQL)** :
-   - Les données issues du projet initial ont été nettoyées, normalisées et insérées dans une base PostgreSQL.
+   - Les données issues du projet initial ont été nettoyées et insérées dans une base PostgreSQL.
    - Nous avons structuré les données autour des tables `anime` (informations sur les animes) et `user` (gestion des utilisateurs).
 
 2. **Routes et endpoints FastAPI** :
