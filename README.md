@@ -91,7 +91,7 @@ Premièrement, il vous faut cloner notre projet git, pour cela :
 Pour pouvoir tester et utilisation l'application, il faut disposer de Docker. Si vous ne possédez pas Docker, rendez-vous sur la page de téléchargement officielle de Docker (pour Windows) [ici](https://www.docker.com/products/docker-desktop/). Suivez les instructions d'installation affichées à l'écran ensuite.
 
 Une fois Docker bien installé, vous pouvez réaliser les étapes de lancement de l'application : 
-- Dans l'application Docker Desktop, appyez sur "Start Engine" pour démarrer Docker
+- Dans l'application Docker Desktop, appuyez sur "Start Engine" pour démarrer Docker
 - Allez dans le répértoire contenant le projet cloné 
 - Copiez la commande suivante : docker compose up --build
 - Faites ctrl + c pour arrêter les conteneurs (et donc l'application)
