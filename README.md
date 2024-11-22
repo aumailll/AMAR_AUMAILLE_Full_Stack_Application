@@ -110,8 +110,8 @@ Enfin, copiez la ligne suivante dans votre navigateur favori : http://localhost:
 
 Si tout s'est bien passé lors du déploiement de l'application, vous arrivez sur une page d'inscription
 <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-  <img src="images/inscription1.jpg" alt="Inscription 1" style="width: 45%; border: 1px solid #ddd; border-radius: 8px;" />
-  <img src="images/inscription2.jpg" alt="Inscription 2" style="width: 45%; border: 1px solid #ddd; border-radius: 8px;" />
+  <img src="images/inscription1.jpg" alt="Inscription 1" style="width: 50%; border: 1px solid #ddd; border-radius: 8px;" />
+  <img src="images/inscription2.jpg" alt="Inscription 2" style="width: 50%; border: 1px solid #ddd; border-radius: 8px;" />
 </div>
 <br>
 
