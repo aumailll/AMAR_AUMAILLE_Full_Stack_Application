@@ -9,6 +9,10 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7fc;
+            background-image: url('/images/preferences.jpeg');
+            background-size: cover; /* Couvre toute la fenêtre sans déformer l'image */
+            background-position: center; /* Centre l'image */
+            background-repeat: no-repeat; /* Empêche la répétition de l'image */
             margin: 0;
             padding: 0;
             display: flex;
@@ -18,15 +22,16 @@
             color: #333;
         }
 
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-        }
+            .container {
+        background-color: rgba(255, 255, 255, 0.8); /* Blanc avec 80% d'opacité */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        position: relative; /* Pour que l'image de fond soit bien positionnée */
+    }
 
         h1 {
             font-size: 24px;

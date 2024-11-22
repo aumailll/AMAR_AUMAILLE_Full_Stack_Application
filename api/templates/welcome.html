@@ -16,6 +16,7 @@
             align-items: center;
             height: 100vh;
             text-align: center;
+            flex-direction: column;
         }
 
         h1 {
@@ -30,18 +31,12 @@
             margin: 10px 0;
         }
 
-        /* Conteneur principal */
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* GIF */
+        img {
             width: 100%;
-            max-width: 500px;
-        }
-
-        .container a {
-            text-decoration: none;
+            max-width: 400px; /* Limite la taille du gif */
+            border-radius: 8px;
+            margin: 20px 0;
         }
 
         /* Boutons */
@@ -66,25 +61,28 @@
             transform: translateY(1px);
         }
 
-        /* Espace entre les boutons */
+        /* Espacement entre les boutons */
         .button-container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Vous êtes bien connecté</h1>
-        <p>Bienvenue, {{ email }} !</p>
-        
-        <div class="button-container">
-            <a href="/auth/user_database?email={{ email }}"><button>Voir la base de données</button></a>
-            <a href="/anime/{{ email }}"><button>Voir les Animes</button></a>
-            <a href="/preferences/{{ email }}"><button>Faites votre sélection !</button></a>
-        </div>
+    <h1>Vous êtes bien connecté</h1>
+    <p>Bienvenue, {{ email }} !</p>
+    <p>Vous voilà prêt à utiliser notre site !</p>
+
+    <!-- GIF -->
+    <img src="/images/chat.gif" alt="Chat gif">
+
+    <!-- Boutons -->
+    <div class="button-container">
+        <a href="/anime/{{ email }}"><button>Voir les Animes</button></a>
+        <a href="/preferences/{{ email }}"><button>Faites votre sélection !</button></a>
     </div>
 
 </body>
