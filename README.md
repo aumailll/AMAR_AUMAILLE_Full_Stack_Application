@@ -294,6 +294,7 @@ Comme nous l'avions mentionné plus haut, nous utilisons l'image officielle prop
 Au cours du développement de notre application, nous avons rencontré quelques difficultés. Nous avons découvert le framework FastAPI et le système de base de données Postgres. De plus, l'année dernière, nous n'avions pas fait un dashboard avec Flask, nous n'avions donc pas cette premiere expérience avec les APIs.  
 La première difficultée abordée a été l'insertion des données : à l'origine, nous voulions directement intégrer dans la table dédiée aux animes les animes scrapés. L'objectif était donc de lancer le scraping et automatiquement insérer les données dans la table "anime". Nous avons perdu beaucoup de temps dessus en raison de petits détails (données manquantes, problèmes de caractères spéciaux, données numériques considérées comme textuelles...) Ainsi, nous avons choisi de stocker les données en local, de nettoyer le csv obtenu pour avoir le format attendu pour la table dans la base de données et enfin de stocker les valeurs. 
 Nous nous sommes aussi "fait avoir" avec les volumes persistants, ce qui a entraîné une grande perte de temps à essayer de résoudre des corrections déjà apportées alors qu'il nous suffisait de supprimer les volumes persistants (docker volume rm nom_volume). 
+Enfin, la dernière étape de notre projet consistant à créer une liste personnalisée d'anime sélectionnée par chaque utilisateur nous a donné du fil à retordre. 
 
 
 
