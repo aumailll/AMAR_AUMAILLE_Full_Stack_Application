@@ -81,9 +81,10 @@ def add_anime(
     except HTTPException as e:
         # En cas d'erreur, on redirige  vers la page d'erreur personnalisée
         return templates.TemplateResponse(
-            "error.html", 
+            "error2.html", 
             {
                 "request": request, 
+                "email": user.email,
                 "error_message": e.detail, 
                 "detail": "Veuillez réessayer."  
             }
