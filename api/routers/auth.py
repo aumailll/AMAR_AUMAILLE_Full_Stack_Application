@@ -1,110 +1,5 @@
-# from fastapi import APIRouter, Depends, Form, HTTPException, Request, Cookie
-# from fastapi.responses import RedirectResponse
-# from fastapi.templating import Jinja2Templates
-# from sqlalchemy.orm import Session
-# from api.models.getdb import get_db
-# from api.models.create_db import User
-# from api.services.auth import hash_password, verify_password, encode_jwt
-# import csv  #
 
-# # Ici : les routes liées à la l'inscription, la connexion, l'authentification
-
-# templates = Jinja2Templates(directory="api/templates")
-# router = APIRouter(prefix="/auth", tags=["Authentication"])
-
-# # Route pour la page de connexion et d'inscription
-# @router.get("/") # directement à auth
-# def auth_page(request: Request):
-#     """Affiche la page unique pour connexion et inscription."""
-#     return templates.TemplateResponse("login.html", {"request": request})
-
-# # Route pour l'inscription de l'utilisateur
-# @router.post("/signup")
-# def signup(
-#     email: str = Form(...), 
-#     password: str = Form(...), 
-#     db: Session = Depends(get_db)
-# ):
-#     """Gère l'inscription d'un utilisateur."""
-#     # Vérification si l'email est déjà dans la base
-#     db_user = db.query(User).filter(User.email == email).first()
-#     if db_user:
-#         raise HTTPException(status_code=400, detail="Email déjà utilisé.")
-
-#     # Création de l'utilisateur
-#     new_user = User(
-#         email=email,
-#         password=hash_password(password)
-#     )
-#     db.add(new_user)
-#     db.commit()
-
-#     # Redirection vers la page de bienvenue 
-#     response = RedirectResponse("/auth/welcome", status_code=303)
-#     response.set_cookie("email", email)  # Stocke l'email dans un cookie
-#     return response
-
-
-# # Route pour la connexion de l'utilisateur
-# @router.post("/login")
-# def login(
-#     email: str = Form(...), 
-#     password: str = Form(...), 
-#     db: Session = Depends(get_db)
-# ):
-#     """Gère la connexion d'un utilisateur."""
-#     # Vérification des informations : email correct (existant, bien écrit), mdp correct 
-#     db_user = db.query(User).filter(User.email == email).first()
-#     if not db_user or not verify_password(password, db_user.password):
-#         raise HTTPException(status_code=401, detail="Email ou mot de passe incorrect.")
-    
-#     # Génération du token JWT
-#     token = encode_jwt(str(db_user.id))
-    
-#     # Création de la réponse de redirection vers la page de bienvenue
-#     response = RedirectResponse("/auth/welcome", status_code=303)
-    
-#     # Enregistrement du token JWT dans un cookie 
-#     response.set_cookie("access_token", token)
-    
-#     # Enregistrement de l'email dans un cookie
-#     response.set_cookie("email", email)  # Stocke l'email dans un cookie
-    
-#     return response
-
-# # # Route pour la page de bienvenue après la connexion
-# # @router.get("/welcome")
-# # def welcome_page(request: Request, email: str = Cookie(None)):
-# #     """Affiche une page de bienvenue après la connexion"""
-# #     if not email:
-# #         raise HTTPException(status_code=401, detail="Non authentifié.")
-    
-# #     # Affiche la page de bienvenue avec l'email récupéré du cookie
-# #     return templates.TemplateResponse("welcome.html", {"request": request, "email": email})
-# @router.get("/welcome/{email}")
-# def welcome_page(request: Request, email: str, db: Session = Depends(get_db)):
-#     """Affiche une page de bienvenue avec l'email dans l'URL"""
-#     # Vérification si l'email existe dans la base
-#     db_user = db.query(User).filter(User.email == email).first()
-#     if not db_user:
-#         raise HTTPException(status_code=404, detail="Utilisateur non trouvé.")
-    
-#     # Affiche la page avec l'email dans l'URL
-#     return templates.TemplateResponse("welcome.html", {"request": request, "email": email})
-
-
-
-
-# # Route pour afficher la base de données des utilisateurs
-# @router.get("/user_database")
-# def database_page(request: Request, db: Session = Depends(get_db)):
-#     """Affiche la base de données des utilisateurs"""
-#     users = db.query(User).all()  
-#     return templates.TemplateResponse("user_database.html", {"request": request, "users": users})
-
-
-
-from fastapi import APIRouter, Form, HTTPException, Depends, Request, Cookie
+from fastapi import APIRouter, Form,  Depends, Request, Cookie
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from api.models.create_db import User
@@ -112,21 +7,22 @@ from api.models.getdb import get_db
 from api.services.auth import hash_password, verify_password, encode_jwt
 from fastapi.templating import Jinja2Templates
 
+# Route pour accéder à la page d'inscription (puis de connexion ensuite)
 templates = Jinja2Templates(directory="api/templates")
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-# Route pour afficher la page de connexion et d'inscription
+# Dès le lancement de l'app, on affiche la page d'inscription
 @router.get("/")
 def auth_page(request: Request):
     """Affiche la page unique pour connexion et inscription."""
     return templates.TemplateResponse("signup.html", {"request": request})
 
-# Route pour l'inscription de l'utilisateur
+# Route pour que l'utilisateur rentre ses informations d'inscription
 @router.post("/signup")
 def signup(request: Request, email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
     """Gère l'inscription d'un utilisateur."""
     db_user = db.query(User).filter(User.email == email).first()
-    if db_user:
+    if db_user: # si l'email existe déjà dans notre bdd
         # Redirige vers la page d'erreur personnalisée
         return templates.TemplateResponse("error.html", {
             "request": request,
@@ -134,27 +30,31 @@ def signup(request: Request, email: str = Form(...), password: str = Form(...), 
             "detail": "Cet email est déjà enregistré dans notre base de données. Veuillez en choisir un autre."
         })
     
+    # Si tout se passe bien, l'user est ajouté à la table user
     new_user = User(email=email, password=hash_password(password))
     db.add(new_user)
     db.commit()
     
+    # Dans ce cas, il est redirigé vers la page de connexion
+    # Nous avons imposé la connexion pour tester facilement l'authentification surtout
     response = RedirectResponse(f"/auth/login", status_code=303)
     response.set_cookie("email", email)
     return response
 
 
+# Route pour accéder à la page de connexion
 @router.get("/login")
 def login_page(request: Request):
     """Affiche la page de connexion."""
     return templates.TemplateResponse("login.html", {"request": request})
 
 
-# Route pour la connexion de l'utilisateur
+# Pour que l'utilisateur insère ses informations de connexion 
 @router.post("/login")
 def login(request: Request, email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
     """Gère la connexion d'un utilisateur."""
-    db_user = db.query(User).filter(User.email == email).first()
-    if not db_user or not verify_password(password, db_user.password):
+    db_user = db.query(User).filter(User.email == email).first() # vérification de l'email 
+    if not db_user or not verify_password(password, db_user.password): # vérification que le mot de passe est ok pour ce mail
         # Redirige vers la page d'erreur personnalisée
         return templates.TemplateResponse("error.html", {
             "request": request,
@@ -162,6 +62,7 @@ def login(request: Request, email: str = Form(...), password: str = Form(...), d
             "detail": "Les informations que vous avez fournies ne correspondent à aucun compte. Veuillez vérifier vos identifiants."
         })
     
+    # Si tout se passe bien, redirection vers la page de bienvenue
     response = RedirectResponse(f"/auth/welcome/{email}", status_code=303)
     response.set_cookie("email", email)
     return response
@@ -181,20 +82,6 @@ def welcome_page(request: Request, email: str, db: Session = Depends(get_db)):
     
     return templates.TemplateResponse("welcome.html", {"request": request, "email": email})
 
-# Route pour afficher la base de données des utilisateurs
-@router.get("/user_database")
-def database_page(request: Request, email: str = Cookie(None), db: Session = Depends(get_db)):
-    """Affiche la base de données des utilisateurs."""
-    if not email:
-        # Redirige vers la page d'erreur personnalisée
-        return templates.TemplateResponse("error.html", {
-            "request": request,
-            "error_message": "Non authentifié.",
-            "detail": "Vous devez être connecté pour accéder à cette page."
-        })
-    
-    users = db.query(User).all()
-    return templates.TemplateResponse("user_database.html", {"request": request, "users": users, "email": email})
 
 
 

@@ -34,7 +34,7 @@ class Anime(BaseSQL):
     genres_themes = Column(String)
     lien = Column(String)
 
-    # Relationship: anime peut avoir plusieurs préférences associées
+    # Relationship: anime peut être aimé par plusieurs utilisateurs
     preferences = relationship("UserAnime", back_populates="anime")
 
 
@@ -46,7 +46,7 @@ class UserAnime(BaseSQL):
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), primary_key=True)  # Clé étrangère pour user
     anime_rank = Column(Integer, ForeignKey('anime.rank'), primary_key=True)  # Clé étrangère pour anime
 
-    # Définir la clé primaire combinée
+    # On crée une clé combinée 
     __table_args__ = (
         PrimaryKeyConstraint('user_id', 'anime_rank'),
     )

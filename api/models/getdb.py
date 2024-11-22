@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 import os
 
-#onfigure une connexion à une base de données PostgreSQL avec SQLAlchemy
+#On configure une connexion à une base de données PostgreSQL avec SQLAlchemy
 # On utilise les mêmes infos que dans le Docker compose pour bien se connecter 
 POSTGRES_USER = os.environ.get("user")
 POSTGRES_PASSWORD = os.environ.get("password")

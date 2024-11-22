@@ -101,7 +101,8 @@ Nous vous conseillons également (pour votre espace de stockage) de faire :
 - docker volume rm nom_volume (pour voir les volumes, faites : docker volume ls)
 
 
-Il faudra sûrement attendre quelques minutes le temps que les conteneurs démarrent et que le téléchargement des données d'anime dans la base de données s'effectue. Voici ce que vous devriez voir dans le terminal une fois que l'application est prête à être utilisée : 
+Il faudra sûrement attendre quelques minutes le temps que les conteneurs démarrent et que le téléchargement des données d'anime dans la base de données s'effectue. Voici ce que vous devriez voir dans le terminal une fois que l'application est prête à être utilisée :   
+  
 ![Terminal Docker](images/terminal_docker.jpg)
 
 Enfin, copiez la ligne suivante dans votre navigateur favori : http://localhost:8000 . Ce lien vous mène à notre application. 
@@ -109,10 +110,14 @@ Enfin, copiez la ligne suivante dans votre navigateur favori : http://localhost:
 
 ### Inscription et connexion
 
-Si tout s'est bien passé lors du déploiement de l'application, vous arrivez sur une page de connexion / première connexion. 
-![Page_connexion](images/connexion.jpg)
+Si tout s'est bien passé lors du déploiement de l'application, vous arrivez sur une page d'inscription
+<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+  <img src="images/inscription1.jpg" alt="Inscription 1" style="width: 45%; border: 1px solid #ddd; border-radius: 8px;" />
+  <img src="images/inscription2.jpg" alt="Inscription 2" style="width: 45%; border: 1px solid #ddd; border-radius: 8px;" />
+</div>
+<br>
 
-Pour accéder au reste de l'application et plus particulièrement pour découvrir des informations sur les animes, la connexion est obligatoire. La première fois il faut renseigner un email et un mot de passe dans le formulaire de "Première connexion", autrement vous recevrez un message d'erreur signifiant que l'email est invalide si vous passez directement par la connexion. Une fois que cette inscription a été réalisée, vous êtes invité à vous connecter en utilisant le formulaire du dessus qui vous redigera directement vers notre page d'accueil. 
+Pour accéder au reste de l'application et plus particulièrement pour découvrir des informations sur les animes, la connexion est obligatoire. La première fois il faut renseigner un email et un mot de passe dans le formulaire d'inscription. Si vous êtes déjà inscrit, un lien sur lequel il faut cliquer vous permettra d'accéder au formulaire de connexon. Une fois que cette inscription a été réalisée, vous serez redirigé vers la page contenant le formulaire de connexion. 
 
 
 ### Utilisation de l'application
@@ -271,7 +276,11 @@ Les routes permettent de découper les points d'accès de l'API en modules logiq
 Ils contiennent la logique métier et les interactions complexes avec la base de données.Ils permettent d'effectuer des traitements de données (par exemple sélectionner les 10 premiers éléments). 
 
 #### Templates
-Il s'agit de la partie frontend. Ce sont des pages html pour accueillir les utilisateurs. Ils permettent de rendre dynamiquement des pages web avec Jinja2.  
+Il s'agit de la partie frontend. Ce sont des pages html pour accueillir les utilisateurs. Ils permettent de rendre dynamiquement des pages web avec Jinja2. 
+
+#### Static
+Ce dossier contient tous nos fichiers CSS qui nous ont permis d'améliorer l'esthétique de nos pages html.  
+
 
 <div style="text-align: center;">
     <img src="images/fastapi.jpg" alt="Fast API" width="600"/>

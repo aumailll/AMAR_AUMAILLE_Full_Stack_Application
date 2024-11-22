@@ -3,6 +3,8 @@ import jwt
 import os
 from datetime import datetime, timedelta, timezone 
 
+# Services liés à l'authentification 
+
 # Contexte pour le hachage des mots de passe
 # Moyen de sécuriser les mdp 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -19,6 +21,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Vérifie si un mot de passe correspond à son hash"""
     return pwd_context.verify(plain_password, hashed_password)
 
+# Génération du token et validation pour l'authentification réussie et sécurisé
 def encode_jwt(user_id: str) -> str:
     """Génère un token JWT"""
     expiration = datetime.now(tz=timezone.utc)  + timedelta(hours=2)  # Expire après 2 heures

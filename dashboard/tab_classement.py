@@ -23,8 +23,8 @@ def fetch_anime_data():
     try:
         # Connexion à la base de données PostgreSQL
         conn = psycopg2.connect(DATABASE_URL)
-        query = "SELECT * FROM anime;"  # Requête SQL
-        df = pd.read_sql(query, conn)  # Charger les données dans un DataFrame
+        query = "SELECT * FROM anime;"  
+        df = pd.read_sql(query, conn)  
         conn.close()
         
         if not df.empty:
@@ -37,7 +37,6 @@ def fetch_anime_data():
 def dashboard_anime_classement():
     data = fetch_anime_data()
 
-    # Titre de l'application
     st.title("Étude du classement des animes")
 
     if not data.empty:
@@ -58,7 +57,7 @@ def dashboard_anime_classement():
                 else:
                     st.error("Aucun anime trouvé.")
 
-        # Filtrer les données en fonction du rang sélectionné
+        # Filtrer les données en fonction du classement (rank) choisi
         st.header("Sélectionnez une tranche d'animes")
         selected_range = st.slider(
             "Tranche de rang :",
@@ -68,7 +67,7 @@ def dashboard_anime_classement():
         )
         filtered_data = data[(data['rank'] >= selected_range[0]) & (data['rank'] <= selected_range[1])]
 
-        # Afficher les liens vers les animes les mieux notés
+        # Afficher les liens vers les animes les mieux notés 
         ITEMS_PER_VIEW = 10
 
         if 'current_page' not in st.session_state:

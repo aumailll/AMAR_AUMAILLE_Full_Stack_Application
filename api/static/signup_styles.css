@@ -57,42 +57,49 @@ body {
             color: #333;
             margin-bottom: 15px;
         }
-        .form-container label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 1em;
-            color: #555;
+
+        form {
+            display: flex;
+            flex-direction: column;
         }
-        .form-container input {
-            width: 90%;
-            padding: 20px;
-            margin-bottom: 15px auto;
+
+
+        label {
+            margin-bottom: 15px;
+        }
+        
+        input {
+            margin-bottom: 15px;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 1em;
         }
-        .form-container button {
-            width: 100%;
+        
+        button {
             padding: 10px;
-            background-color: #007BFF;
-            color: white;
+            background: #007BFF;
+            margin-top: 20px;
+            color: #fff;
             border: none;
             border-radius: 5px;
-            font-size: 1em;
             cursor: pointer;
         }
-        .form-container button:hover {
-            background-color: #0056b3;
+        
+        button:hover {
+            background: #0056b3;
         }
+        
         .already-registered {
             text-align: center;
             margin-top: 10px;
         }
+        
         .already-registered a {
             color: #007BFF;
             text-decoration: none;
             font-size: 1em;
         }
+        
         .already-registered a:hover {
             text-decoration: underline;
         }

@@ -8,20 +8,16 @@ from bs4 import BeautifulSoup
 def get_cover_image_url(page_url):
     """
     Récupère l'URL de l'image de couverture d'une page MyAnimeList.
-
-    Args:
-        page_url (str): URL de la page MyAnimeList.
-
-    Returns:
-        str: URL de l'image de couverture, ou None si non trouvée.
     """
     try:
+        # on a eu besoin d un user agent pour faire fonctionner ce dashboard
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
         response = requests.get(page_url, headers=headers)
         response.raise_for_status()  
-
+       
+       # scraping des données pour récupèrer les images
         soup = BeautifulSoup(response.text, 'html.parser')
 
         image_tag = soup.find('meta', property='og:image')

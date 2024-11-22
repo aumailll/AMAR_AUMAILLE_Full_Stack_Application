@@ -8,12 +8,16 @@ from api.services.utils import validate_email_user
 from fastapi import Form
 from api.models.create_db import User
 
+# Routes pour la gestion des préférences
+# 2 objectifs : générér une recherche d'anime et les stocker dans la table anime user
 templates = Jinja2Templates(directory="api/templates")
 router = APIRouter(prefix="/preferences", tags=["Preferences"])
 
 from fastapi import HTTPException, status
 
+# Accès à la page de recherche tout en vérifiant les infos de connexion
 @router.get("/{email}")
+
 def preferences_page(
     request: Request, 
     email: User = Depends(validate_email_user),
@@ -24,7 +28,7 @@ def preferences_page(
     Page des préférences avec recherche d'anime et ajout à la base de données.
     """
     try:
-        results = []
+        results = [] # stockage des résultats
         if query:
             results = search_anime(query, db)  # Appel au service de recherche
         return templates.TemplateResponse("preferences.html", {
@@ -34,7 +38,7 @@ def preferences_page(
             "query": query
         })
     except HTTPException as e:
-        # En cas d'erreur, on redirige avec un template error.html
+        # En cas d'erreur, on redirige vers la page d'erreur personnalisée
         return templates.TemplateResponse(
             "error.html", 
             {
@@ -45,7 +49,7 @@ def preferences_page(
             status_code=e.status_code  # Code d'erreur HTTP
         )
     except Exception as ex:
-        # Gestion d'autres exceptions imprévues
+        # Si autre erreur encore 
         return templates.TemplateResponse(
             "error.html", 
             {
@@ -59,11 +63,11 @@ def preferences_page(
 
 
 
-
+# Route pour gérer l'ajout de l'anime à la table personnalisée pour chaque utilisateur
 @router.post("/{email}/add_anime")
 def add_anime(
     request: Request, 
-    anime_rank: int = Form(...),  # Récupère anime_rank depuis un formulaire
+    anime_rank: int = Form(...),  # Récupère anime_rank depuis un formulaire (en fonction de Request)
     user :User = Depends(validate_email_user), 
     db: Session = Depends(get_db)
 ):
@@ -75,18 +79,20 @@ def add_anime(
         return templates.TemplateResponse("ajout_anime.html", {"request": request, "email": user.email, "message": "Anime ajouté avec succès."})
 
     except HTTPException as e:
-        # En cas d'erreur, on redirige avec un template error.html
+        # En cas d'erreur, on redirige  vers la page d'erreur personnalisée
         return templates.TemplateResponse(
             "error.html", 
             {
                 "request": request, 
-                "error_message": e.detail,  # Message d'erreur à afficher
-                "detail": "Veuillez réessayer."  # Détails supplémentaires
+                "error_message": e.detail, 
+                "detail": "Veuillez réessayer."  
             }
         )
 
 
+# Route pour accéder à l'affichage de la table personnalisée (dépend donc de l'utilisateur)
 @router.get("/{email}/show_preferences")
+
 async def show_preferences(
     request: Request,
     user: User = Depends(validate_email_user),  # Directement valider l'utilisateur
@@ -98,6 +104,6 @@ async def show_preferences(
         {
             "request": request,
             "user_animes": user_animes,
-            "email": user.email,  # Renvoyer l'email au template si nécessaire
+            "email": user.email,  
         },
     )

@@ -5,12 +5,12 @@ from sqlalchemy.orm import sessionmaker
 from api.models.create_db import Anime 
 from api.models.getdb import DATABASE_URL  
 
-# Créer l'engine de connexion à la base de données
+# Création d'un engine pour enregistrer les données au tout début 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=True, bind=engine)
 
 # Fonction d'insertion des données depuis le CSV
-def insert_data_from_csv(csv_file_path):
+def insert_data(csv_file_path):
     session = SessionLocal()
     try:
        
@@ -18,7 +18,7 @@ def insert_data_from_csv(csv_file_path):
             reader = csv.DictReader(file)
             
             for row in reader:
-                # Créer une instance de l'objet Anime avec les données du CSV
+                # On parcourt chaque tuple du csv et on créep pour chacun une instance dans la table anime
                 anime = Anime(
                     rank=row['rank'],
                     titre=row['titre'],
@@ -43,7 +43,3 @@ def insert_data_from_csv(csv_file_path):
 
     finally:
         session.close()
-
-# Appel de la fonction pour insérer les données
-csv_file_path = r'Data/anime.csv' 
-insert_data_from_csv(csv_file_path)
