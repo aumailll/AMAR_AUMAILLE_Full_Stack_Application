@@ -17,6 +17,7 @@
         - [Adaptation des données pour Streamlit](#adaptation-des-données-pour-streamlit)
         - [Pourquoi Streamlit et FastAPI ?](#pourquoi-streamlit-et-fastapi-)
         - [Fonctionnalités du tableau de bord](#fonctionnalités-du-tableau-de-bord)
+        - [**1. Onglet : Classement des Animes**](#1-onglet--classement-des-animes)
           - [1. Barre de recherche](#1-barre-de-recherche)
           - [2. Filtrage par tranche de rang](#2-filtrage-par-tranche-de-rang)
           - [3. Histogramme des studios les plus productifs](#3-histogramme-des-studios-les-plus-productifs)
@@ -24,6 +25,7 @@
           - [5. Diagramme circulaire des genres les plus populaires](#5-diagramme-circulaire-des-genres-les-plus-populaires)
           - [6. Histogramme du nombre d’épisodes par anime](#6-histogramme-du-nombre-dépisodes-par-anime)
           - [7. Diagramme de dispersion pour les producteurs les plus actifs](#7-diagramme-de-dispersion-pour-les-producteurs-les-plus-actifs)
+        - [**2. Onglet : Recherche par genre et/ou thème**](#2-onglet--recherche-par-genre-etou-thème)
   - [Developer guide](#developer-guide)
     - [Vue d'ensemble](#vue-densemble)
     - [Architecture du code](#architecture-du-code)
@@ -187,7 +189,14 @@ En combinant ces deux outils, nous avons transformé une étude de données stat
 
 Le tableau de bord interactif est conçu pour offrir une exploration intuitive et approfondie des 300 meilleurs animes. Voici une présentation des fonctionnalités principales, chacune accompagnée d'une explication détaillée et d'une capture d'écran illustrative.
 
+Le tableau de bord est divisé en deux onglets principaux pour une navigation intuitive :
 
+1. **Classement des Animes** : Présentation des animes triés par rang, avec des fonctionnalités interactives pour explorer les données.
+2. **Recherche par Genre ou Thème** : Permet de filtrer et de trouver des animes correspondant à des genres ou thèmes spécifiques.
+
+Cette séparation est gérée via `st.tabs()` dans le fichier `main_dash.py`, facilitant l'organisation et la modularité du code.
+
+##### **1. Onglet : Classement des Animes**
 ###### 1. Barre de recherche
 
 La barre de recherche permet aux utilisateurs de trouver rapidement un anime en entrant tout ou partie de son titre. Une fois la recherche effectuée, les détails de l’anime correspondant sont affichés, notamment son score, le studio, le statut (en cours ou terminé), les genres associés, et le nombre d’épisodes. Cette fonctionnalité est particulièrement utile pour les utilisateurs qui souhaitent accéder directement aux informations d’un anime spécifique sans parcourir l’ensemble du classement.
@@ -230,6 +239,12 @@ Ce graphique met en relation le nombre de productions d’un producteur et les s
 
 ![Capture Producteurs actifs](images/streamlit_producers.jpg)
 
+
+##### **2. Onglet : Recherche par genre et/ou thème**
+
+L'onglet "Recherche par Genre ou Thème" permet aux utilisateurs d'explorer les animes en fonction de leurs préférences personnelles. Une liste déroulante interactive offre la possibilité de sélectionner un ou plusieurs genres ou thèmes parmi ceux disponibles, avec des suggestions par défaut comme "Action" et "Award Winning", tout en laissant l'utilisateur libre de choisir d'autres catégories. Les animes correspondant aux critères sélectionnés sont présentés sous forme de fiches détaillées. Chaque fiche contient des informations clés telles que le titre de l'anime, une image de couverture récupérée dynamiquement depuis la page MyAnimeList (si disponible), ainsi que des données complémentaires comme le score, le studio de production, les genres et thèmes associés, le statut (terminé ou en cours) et le nombre d'épisodes. Un lien cliquable dirige également l'utilisateur vers la page détaillée de l'anime pour en savoir davantage. Si aucun anime ne correspond aux genres ou thèmes sélectionnés, un message d’avertissement clair informe l’utilisateur, garantissant une expérience fluide et intuitive.
+
+![Capture Recherche Genre/Thème](images/streamlit_2eOnglet.jpg)
 
 ## Developer guide
 
