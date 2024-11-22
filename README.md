@@ -129,7 +129,7 @@ Le projet initial avait pour but d'explorer les données à l’aide de Python e
 Pour enrichir l’étude initiale et construire une application web robuste et modulaire, nous avons utilisé **FastAPI** pour structurer l’API qui alimente le tableau de bord. Voici les principales étapes et choix que nous avons réalisés pour adapter le projet :
 
 1. **Création d’une base de données relationnelle (PostgreSQL)** :
-   - Les données issues du projet initial ont été nettoyées, normalisées et insérées dans une base PostgreSQL.
+   - Les données issues du projet initial ont été nettoyées et insérées dans une base PostgreSQL.
    - Nous avons structuré les données autour des tables `anime` (informations sur les animes) et `user` (gestion des utilisateurs).
 
 2. **Routes et endpoints FastAPI** :
