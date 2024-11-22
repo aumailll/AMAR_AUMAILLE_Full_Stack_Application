@@ -24,16 +24,15 @@ class MyAnimeListSpider(scrapy.Spider):
          'https://myanimelist.net/topanime.php?limit=250',
      ]
 
-     results = []  # Stockage des résultats
+     results = []
 
      def __init__(self, *args, **kwargs):
          super(MyAnimeListSpider, self).__init__(*args, **kwargs)
           # Chemin vers le fichier CSV
           # Chemin personnel car on lance le scraping une fois en local pour stocker le fichier
           # On s'assure juste qu'il sera bien disponible dans le dossier du projet
-         csv_file_path = r'D:\E5\Full_stack\Versions-projet\v7\Data\anime.csv' 
+         csv_file_path = r'Data\anime.csv' 
 
-         ## Encapsuler tous les champs entre guillemets pour gérer les caractères spéciaux
          self.file = open(csv_file_path, 'w', newline='', encoding='utf-8')
          self.writer = csv.writer(self.file, quoting=csv.QUOTE_ALL)  
 
@@ -70,7 +69,6 @@ class MyAnimeListSpider(scrapy.Spider):
          item['type'] = demographic
          item['genres_ET_themes'] = [g for g in blatest if g not in [demographic]]
 
-         # Ajouter l'item à la liste des résultats
          self.results.append(item)
 
      def closed(self, reason):
@@ -79,7 +77,6 @@ class MyAnimeListSpider(scrapy.Spider):
          self.results.sort(key=lambda x: int(x['rank']))
 
          for result in self.results:
-             # Écrire chaque résultat dans le fichier CSV
              self.writer.writerow([
                  result['rank'],
                  result['title'],  
@@ -90,13 +87,8 @@ class MyAnimeListSpider(scrapy.Spider):
                  ', '.join(result['studio']),  
                  ', '.join(result['producteurs']),  
                  result['type'],
-                 ', '.join(result['genres_ET_themes']),  # Joindre les genres : thèmes en une seule chaîne
+                 ', '.join(result['genres_ET_themes']),
              ])
 
-         self.file.close()  # Fermer le fichier lors de la fermeture de la spider
+         self.file.close() 
          self.logger.info(f"Les données ont été écrites dans {self.file.name}.")
-
-#notes attention des fois le type n est pas noté, il n y a pas demgraphic sur la page de l anime= info non renseignée
-
-
-
